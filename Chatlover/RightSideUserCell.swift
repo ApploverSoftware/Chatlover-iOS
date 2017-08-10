@@ -6,4 +6,8 @@
 //  Copyright © 2017 Applover. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+class RightSideUserCell: UITableViewCell {
+    
+}

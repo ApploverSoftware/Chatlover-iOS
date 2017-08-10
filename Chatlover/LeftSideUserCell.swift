@@ -8,4 +8,6 @@
 
 import UIKit
 
-
+class LeftSideUserCell: UITableViewCell {
+    
+}
