@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		45C36EEF38D63FA53DF5013B /* Pods_ChatloverUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F47520114F2D0EC6555A9FB4 /* Pods_ChatloverUITests.framework */; };
 		4DB6769D9C8DDB6CE9EA72AF /* Pods_ChatloverTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D12EF57E47ADF93A805682EB /* Pods_ChatloverTests.framework */; };
+		E640F5751F3DA7D2006E2E65 /* ChannelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E640F5741F3DA7D2006E2E65 /* ChannelsViewController.swift */; };
+		E640F5771F3DA808006E2E65 /* ChannelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E640F5761F3DA808006E2E65 /* ChannelCell.swift */; };
 		E6FD66951F3C7DB4004D8813 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FD66941F3C7DB4004D8813 /* AppDelegate.swift */; };
 		E6FD66971F3C7DB4004D8813 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FD66961F3C7DB4004D8813 /* ChatViewController.swift */; };
 		E6FD669A1F3C7DB4004D8813 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6FD66981F3C7DB4004D8813 /* Main.storyboard */; };
@@ -20,7 +22,7 @@
 		E6FD66CD1F3C86AB004D8813 /* ChatCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FD66CC1F3C86AB004D8813 /* ChatCells.swift */; };
 		E6FD66D41F3CAE94004D8813 /* ChatLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FD66D31F3CAE94004D8813 /* ChatLayoutManager.swift */; };
 		E6FD66D71F3CAEBC004D8813 /* InputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FD66D61F3CAEBC004D8813 /* InputAccessoryView.swift */; };
-		E6FD66D91F3CAEDE004D8813 /* CustomUITextViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FD66D81F3CAEDE004D8813 /* CustomUITextViews.swift */; };
+		E6FD66D91F3CAEDE004D8813 /* CustomUIComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FD66D81F3CAEDE004D8813 /* CustomUIComponents.swift */; };
 		FFB15206D9DBD3141EF7E9E1 /* Pods_Chatlover.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DF5F243175480655FD2E80C7 /* Pods_Chatlover.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +52,8 @@
 		D12EF57E47ADF93A805682EB /* Pods_ChatloverTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatloverTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D843F4DCE75A0F6D086758D6 /* Pods-Chatlover.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatlover.release.xcconfig"; path = "Pods/Target Support Files/Pods-Chatlover/Pods-Chatlover.release.xcconfig"; sourceTree = "<group>"; };
 		DF5F243175480655FD2E80C7 /* Pods_Chatlover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chatlover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E640F5741F3DA7D2006E2E65 /* ChannelsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelsViewController.swift; sourceTree = "<group>"; };
+		E640F5761F3DA808006E2E65 /* ChannelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelCell.swift; sourceTree = "<group>"; };
 		E6FD66911F3C7DB4004D8813 /* Chatlover.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chatlover.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6FD66941F3C7DB4004D8813 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E6FD66961F3C7DB4004D8813 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -70,7 +74,7 @@
 		E6FD66CC1F3C86AB004D8813 /* ChatCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCells.swift; sourceTree = "<group>"; };
 		E6FD66D31F3CAE94004D8813 /* ChatLayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLayoutManager.swift; sourceTree = "<group>"; };
 		E6FD66D61F3CAEBC004D8813 /* InputAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputAccessoryView.swift; sourceTree = "<group>"; };
-		E6FD66D81F3CAEDE004D8813 /* CustomUITextViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomUITextViews.swift; sourceTree = "<group>"; };
+		E6FD66D81F3CAEDE004D8813 /* CustomUIComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomUIComponents.swift; sourceTree = "<group>"; };
 		F47520114F2D0EC6555A9FB4 /* Pods_ChatloverUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatloverUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -125,6 +129,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E640F5731F3DA7BF006E2E65 /* Channels */ = {
+			isa = PBXGroup;
+			children = (
+				E640F5741F3DA7D2006E2E65 /* ChannelsViewController.swift */,
+				E640F5761F3DA808006E2E65 /* ChannelCell.swift */,
+			);
+			name = Channels;
+			sourceTree = "<group>";
+		};
 		E6FD66881F3C7DB4004D8813 = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +165,7 @@
 			children = (
 				E6FD66941F3C7DB4004D8813 /* AppDelegate.swift */,
 				E6FD66D21F3CAE7A004D8813 /* LayoutManager */,
+				E640F5731F3DA7BF006E2E65 /* Channels */,
 				E6FD66D51F3CAEA7004D8813 /* ChatViewController */,
 				E6FD66C51F3C808F004D8813 /* ConfigFiles */,
 				E6FD66981F3C7DB4004D8813 /* Main.storyboard */,
@@ -204,7 +218,7 @@
 			children = (
 				E6FD66961F3C7DB4004D8813 /* ChatViewController.swift */,
 				E6FD66D61F3CAEBC004D8813 /* InputAccessoryView.swift */,
-				E6FD66D81F3CAEDE004D8813 /* CustomUITextViews.swift */,
+				E6FD66D81F3CAEDE004D8813 /* CustomUIComponents.swift */,
 				E6FD66CC1F3C86AB004D8813 /* ChatCells.swift */,
 			);
 			name = ChatViewController;
@@ -500,10 +514,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6FD66D91F3CAEDE004D8813 /* CustomUITextViews.swift in Sources */,
+				E6FD66D91F3CAEDE004D8813 /* CustomUIComponents.swift in Sources */,
+				E640F5751F3DA7D2006E2E65 /* ChannelsViewController.swift in Sources */,
 				E6FD66971F3C7DB4004D8813 /* ChatViewController.swift in Sources */,
 				E6FD66951F3C7DB4004D8813 /* AppDelegate.swift in Sources */,
 				E6FD66CD1F3C86AB004D8813 /* ChatCells.swift in Sources */,
+				E640F5771F3DA808006E2E65 /* ChannelCell.swift in Sources */,
 				E6FD66D71F3CAEBC004D8813 /* InputAccessoryView.swift in Sources */,
 				E6FD66D41F3CAE94004D8813 /* ChatLayoutManager.swift in Sources */,
 			);

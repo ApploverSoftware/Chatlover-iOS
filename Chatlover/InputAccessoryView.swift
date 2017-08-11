@@ -12,6 +12,15 @@ class InputAccessoryView: UIView, UITextViewDelegate {
     @IBOutlet weak var textView: InputTextView!
     @IBOutlet weak var maxHeight: NSLayoutConstraint!
     
+    var message: String {
+        get {
+            let messageText = textView.text!
+            textView.text = ""
+            invalidateIntrinsicContentSize()
+            return messageText
+        }
+    }
+    
     override var intrinsicContentSize: CGSize {
         // Calculate intrinsicContentSize that will fit all the text
         let textSize = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: CGFloat.greatestFiniteMagnitude))

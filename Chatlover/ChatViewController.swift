@@ -25,7 +25,7 @@ class Message {
     }
 }
 
-let fakeData = [
+var fakeData = [
     Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
     Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
     Message(messageText: "Ale ma kota", type: .receiver, userImagePath: ""),
@@ -85,21 +85,29 @@ class ChatViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    // MARK: - Keyboard handler
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
+    }
+    
     func showKeyboard(notification: Notification) {
-        if let keyboardFrame = notification.userInfo![UIKeyboardFrameEndUserInfoKey] as? NSValue {
-            let height = keyboardFrame.cgRectValue.height
-            tableView.contentInset.bottom = height
-            tableView.scrollIndicatorInsets.bottom = height
-            if fakeData.count > 0 {
-                let indexPathToScroll = IndexPath(row: fakeData.count - 1, section: 0)
-                self.tableView.scrollToRow(at: indexPathToScroll, at: .bottom, animated: true)
-            }
+        guard let keyboardFrame = notification.userInfo![UIKeyboardFrameEndUserInfoKey] as? NSValue else {
+            return
         }
+        let height = keyboardFrame.cgRectValue.height
+        tableView.contentInset.bottom = height
+        tableView.scrollIndicatorInsets.bottom = height
+        if fakeData.count > 0 {
+            let indexPathToScroll = IndexPath(row: fakeData.count - 1, section: 0)
+            self.tableView.scrollToRow(at: indexPathToScroll, at: .bottom, animated: true)
+        }
+    
     }
     
     @IBAction func sendMessage(_ sender: UIButton) {
-        
+        let newMessage = Message(messageText: inputBar.message, type: .receiver, userImagePath: "")
+        fakeData.append(newMessage)
+        tableView.reloadData()
     }
 }
 

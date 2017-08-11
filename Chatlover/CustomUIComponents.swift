@@ -22,23 +22,13 @@ class InputTextView: UITextView {
 
 class MessageLabel: UILabel {
     
-    var padding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+    var padding = ChatLayoutManager.Messages.textPadding
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.layer.cornerRadius = 16
+        self.layer.cornerRadius = ChatLayoutManager.Messages.messageCornerRadius
         self.layer.masksToBounds = true
         self.clipsToBounds = true
-    }
-    
-    // Create a new PaddingLabel instance programamtically with the desired insets
-    required init(padding: UIEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)) {
-        self.padding = padding
-        super.init(frame: CGRect.zero)
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -54,13 +44,6 @@ class MessageLabel: UILabel {
         let width = superContentSize.width + padding.left + padding.right
         let height = superContentSize.height + padding.top + padding.bottom
         return CGSize(width: width, height: height)
-    }
-    
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        let superSizeThatFits = super.sizeThatFits(size)
-        let width = superSizeThatFits.width + padding.left + padding.right
-        let heigth = superSizeThatFits.height + padding.top + padding.bottom
-        return CGSize(width: width, height: heigth)
     }
 }
 

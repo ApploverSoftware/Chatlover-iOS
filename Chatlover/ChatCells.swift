@@ -26,8 +26,6 @@ class SenderCell: UITableViewCell, ObjectIdentifier {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.layer.borderWidth = 0.5
-        contentView.layer.borderColor = UIColor.black.cgColor
         message.backgroundColor = UIColor.green
     }
 }
@@ -37,8 +35,6 @@ class ReceiverCell: UITableViewCell, ObjectIdentifier {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.layer.borderWidth = 0.5
-        contentView.layer.borderColor = UIColor.black.cgColor
         message.backgroundColor = UIColor.red
     }
 }
