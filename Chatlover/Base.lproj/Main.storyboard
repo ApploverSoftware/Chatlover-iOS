@@ -41,7 +41,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="ZHx-Hx-v2j" customClass="ChannelCell" customModule="Chatlover" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChannelCell" id="ZHx-Hx-v2j" customClass="ChannelCell" customModule="Chatlover" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZHx-Hx-v2j" id="kuC-qr-R8x">
@@ -62,7 +62,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="label" destination="9mf-tB-R1n" id="j1X-pP-CkN"/>
-                                            <segue destination="XfL-ty-bnF" kind="show" id="KiG-5Y-Rng"/>
+                                            <segue destination="XfL-ty-bnF" kind="show" identifier="showChat" id="KiG-5Y-Rng"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -98,11 +98,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="J9y-Zv-nhD">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="553"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SenderCell" rowHeight="71" id="fix-Pr-HXP" customClass="SenderCell" customModule="Chatlover" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="71"/>
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="71"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fix-Pr-HXP" id="LbD-U2-ACK">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
@@ -137,7 +137,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ReceiverCell" rowHeight="90" id="L0d-Wd-joy" customClass="ReceiverCell" customModule="Chatlover" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="127" width="375" height="90"/>
+                                        <rect key="frame" x="0.0" y="126.5" width="375" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L0d-Wd-joy" id="kUO-mY-TaG">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
@@ -168,7 +168,7 @@
                         <constraints>
                             <constraint firstItem="J9y-Zv-nhD" firstAttribute="leading" secondItem="yZv-hn-fYW" secondAttribute="leading" id="Ai1-Cb-5e3"/>
                             <constraint firstItem="J9y-Zv-nhD" firstAttribute="top" secondItem="DPA-pJ-O7l" secondAttribute="bottom" id="K78-uf-TH4"/>
-                            <constraint firstItem="PzP-Er-awH" firstAttribute="top" secondItem="J9y-Zv-nhD" secondAttribute="bottom" id="ZJ7-cU-58w"/>
+                            <constraint firstItem="PzP-Er-awH" firstAttribute="top" secondItem="J9y-Zv-nhD" secondAttribute="bottom" constant="50" id="ZJ7-cU-58w"/>
                             <constraint firstAttribute="trailing" secondItem="J9y-Zv-nhD" secondAttribute="trailing" id="aBS-9u-uHe"/>
                         </constraints>
                     </view>

@@ -8,6 +8,6 @@
 
 import UIKit
 
-class ChannelCell: UITableViewCell {
+class ChannelCell: UITableViewCell, ObjectIdentifier {
     @IBOutlet weak var label: UILabel!
 }
