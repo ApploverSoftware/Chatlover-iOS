@@ -29,6 +29,7 @@ class InputAccessoryView: UIView, UITextViewDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         autoresizingMask = .flexibleHeight
+        backgroundColor = .clear
         textView.translatesAutoresizingMaskIntoConstraints = false
     }
     

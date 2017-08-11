@@ -93,15 +93,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="J9y-Zv-nhD">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="J9y-Zv-nhD">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SenderCell" rowHeight="71" id="fix-Pr-HXP">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="71"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SenderCell" rowHeight="71" id="fix-Pr-HXP" customClass="SenderCell" customModule="Chatlover" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.5" width="375" height="71"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fix-Pr-HXP" id="LbD-U2-ACK">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="70.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="D1c-xq-3rE">
@@ -111,46 +111,51 @@
                                                         <constraint firstAttribute="height" constant="32" id="cnP-NI-FJI"/>
                                                     </constraints>
                                                 </imageView>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="sdf" translatesAutoresizingMaskIntoConstraints="NO" id="Hq4-TB-NUk">
-                                                    <rect key="frame" x="56" y="8" width="31" height="54.5"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                    <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
-                                                </textView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bdR-6H-I0Q" customClass="MessageLabel" customModule="Chatlover" customModuleProvider="target">
+                                                    <rect key="frame" x="56" y="8" width="0.0" height="55"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Hq4-TB-NUk" firstAttribute="leading" secondItem="D1c-xq-3rE" secondAttribute="trailing" constant="16" id="Lwg-wX-8hJ"/>
-                                                <constraint firstAttribute="bottom" secondItem="Hq4-TB-NUk" secondAttribute="bottom" constant="8" id="Uth-vU-7ez"/>
+                                                <constraint firstItem="bdR-6H-I0Q" firstAttribute="top" secondItem="LbD-U2-ACK" secondAttribute="top" constant="8" id="7I1-Cv-ass"/>
+                                                <constraint firstItem="bdR-6H-I0Q" firstAttribute="leading" secondItem="D1c-xq-3rE" secondAttribute="trailing" constant="16" id="Jzn-KA-vyz"/>
                                                 <constraint firstAttribute="bottom" secondItem="D1c-xq-3rE" secondAttribute="bottom" constant="8" id="aHT-oX-Ie8"/>
+                                                <constraint firstAttribute="bottom" secondItem="bdR-6H-I0Q" secondAttribute="bottom" constant="8" id="dge-sP-6jg"/>
                                                 <constraint firstItem="D1c-xq-3rE" firstAttribute="leading" secondItem="LbD-U2-ACK" secondAttribute="leading" constant="8" id="fv7-D7-8Jn"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Hq4-TB-NUk" secondAttribute="trailing" constant="64" id="hqg-zz-QiZ"/>
-                                                <constraint firstItem="Hq4-TB-NUk" firstAttribute="top" secondItem="LbD-U2-ACK" secondAttribute="top" constant="8" id="qzR-A1-JIp"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bdR-6H-I0Q" secondAttribute="trailing" constant="64" id="r8W-5u-yYC"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="message" destination="bdR-6H-I0Q" id="Ufz-qN-E4K"/>
+                                            <outlet property="userImage" destination="D1c-xq-3rE" id="6gL-cn-4iX"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ReceiverCell" rowHeight="90" id="L0d-Wd-joy">
-                                        <rect key="frame" x="0.0" y="99" width="375" height="90"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ReceiverCell" rowHeight="90" id="L0d-Wd-joy" customClass="ReceiverCell" customModule="Chatlover" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="126.5" width="375" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L0d-Wd-joy" id="kUO-mY-TaG">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="sdjgkbdkjbgb dfjkgb dfkjsgdfg" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="7ZF-hP-khK">
-                                                    <rect key="frame" x="152" y="8" width="207" height="73.5"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                    <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
-                                                </textView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TP8-yr-KZA" customClass="MessageLabel" customModule="Chatlover" customModuleProvider="target">
+                                                    <rect key="frame" x="363" y="8" width="0.0" height="74"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="thin" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="7ZF-hP-khK" secondAttribute="bottom" constant="8" id="1cf-Zj-Ksx"/>
-                                                <constraint firstAttribute="trailing" secondItem="7ZF-hP-khK" secondAttribute="trailing" constant="16" id="JBn-IO-Vgz"/>
-                                                <constraint firstItem="7ZF-hP-khK" firstAttribute="top" secondItem="kUO-mY-TaG" secondAttribute="top" constant="8" id="OPc-U8-Ndq"/>
-                                                <constraint firstItem="7ZF-hP-khK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kUO-mY-TaG" secondAttribute="leading" constant="64" id="wZy-01-l3p"/>
+                                                <constraint firstItem="TP8-yr-KZA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kUO-mY-TaG" secondAttribute="leading" constant="64" id="C02-v5-fcd"/>
+                                                <constraint firstAttribute="bottom" secondItem="TP8-yr-KZA" secondAttribute="bottom" constant="8" id="D6F-EU-9ep"/>
+                                                <constraint firstItem="TP8-yr-KZA" firstAttribute="top" secondItem="kUO-mY-TaG" secondAttribute="top" constant="8" id="lfK-sR-Pd9"/>
+                                                <constraint firstAttribute="trailing" secondItem="TP8-yr-KZA" secondAttribute="trailing" constant="12" id="uyE-Ke-EpV"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="message" destination="TP8-yr-KZA" id="UAX-j5-VMh"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -181,6 +186,13 @@
                             </view>
                             <blurEffect style="light"/>
                         </visualEffectView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zww-N6-OZX">
+                            <rect key="frame" x="0.0" y="0.0" width="365" height="1"/>
+                            <color key="backgroundColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="64E-m3-ls0"/>
+                            </constraints>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UpN-Lt-YAs" userLabel="ContainerView">
                             <rect key="frame" x="0.0" y="0.0" width="365" height="61"/>
                             <subviews>
@@ -192,6 +204,9 @@
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <state key="normal" title="Send"/>
+                                    <connections>
+                                        <action selector="sendMessage:" destination="XfL-ty-bnF" eventType="touchUpInside" id="dzn-L3-Amn"/>
+                                    </connections>
                                 </button>
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="Lorem ipsum" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gFw-49-z1o" customClass="InputTextView" customModule="Chatlover" customModuleProvider="target">
                                     <rect key="frame" x="12" y="12" width="297" height="37"/>
@@ -207,7 +222,7 @@
                                     </connections>
                                 </textView>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="gFw-49-z1o" firstAttribute="centerY" secondItem="UpN-Lt-YAs" secondAttribute="centerY" id="3o5-Il-0FG"/>
                                 <constraint firstItem="gFw-49-z1o" firstAttribute="top" secondItem="UpN-Lt-YAs" secondAttribute="top" constant="12" id="L8q-7d-lXw"/>
@@ -221,13 +236,16 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="zww-N6-OZX" secondAttribute="trailing" id="1js-oh-Rba"/>
                         <constraint firstAttribute="height" secondItem="UpN-Lt-YAs" secondAttribute="height" id="5x8-Cd-pfB"/>
                         <constraint firstItem="UpN-Lt-YAs" firstAttribute="leading" secondItem="jlm-pl-C0l" secondAttribute="leading" id="JU4-cg-uMl"/>
                         <constraint firstItem="idb-qv-7jd" firstAttribute="leading" secondItem="jlm-pl-C0l" secondAttribute="leading" id="NUE-ca-7V6"/>
                         <constraint firstAttribute="trailing" secondItem="idb-qv-7jd" secondAttribute="trailing" id="dce-Pp-JWK"/>
                         <constraint firstAttribute="bottom" secondItem="idb-qv-7jd" secondAttribute="bottom" id="frv-aW-G3a"/>
                         <constraint firstAttribute="bottom" secondItem="UpN-Lt-YAs" secondAttribute="bottom" id="gAh-Iw-XTN"/>
+                        <constraint firstItem="zww-N6-OZX" firstAttribute="leading" secondItem="jlm-pl-C0l" secondAttribute="leading" id="h04-n9-RCz"/>
                         <constraint firstAttribute="trailing" secondItem="UpN-Lt-YAs" secondAttribute="trailing" id="k8C-84-WCy"/>
+                        <constraint firstItem="zww-N6-OZX" firstAttribute="top" secondItem="jlm-pl-C0l" secondAttribute="top" id="kvH-cx-jbN"/>
                         <constraint firstItem="idb-qv-7jd" firstAttribute="top" secondItem="jlm-pl-C0l" secondAttribute="top" id="m4I-Ju-PMM"/>
                     </constraints>
                     <connections>
