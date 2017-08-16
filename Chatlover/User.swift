@@ -50,11 +50,9 @@ class User: NSObject {
     ///   - completionHandler: Return User if success otherwise Error
     class func info(forUserId: String, completionHandler: @escaping (Result<User>) -> Void) {
         Database.database().reference().child("chat_users").child(forUserId).observeSingleEvent(of: .value, with: { (snapshot) in
-            if snapshot.exists() {
-                let value = snapshot.value as! [String : String]
-                let currentLoggedData = User(fcmToken: value["fcmToken"]!, name: value["name"]!, uid: forUserId)
-                completionHandler(Result.success(currentLoggedData))
-            }
+            let value = snapshot.value as! [String : String]
+            let currentLoggedData = User(fcmToken: value["fcmToken"]!, name: value["name"]!, uid: forUserId)
+            completionHandler(Result.success(currentLoggedData))
         })
     }
 

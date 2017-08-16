@@ -52,7 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // MARK: - Receive notification
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        
         if Auth.auth().canHandleNotification(userInfo) {
             completionHandler(UIBackgroundFetchResult.noData)
             return

@@ -9,51 +9,6 @@
 import UIKit
 import Firebase
 
-enum MessageType: String {
-    case receiver
-    case sender
-}
-
-class Message1 {
-    var messageText: String
-    var type: MessageType
-    var userImagePath: String
-    
-    init(messageText: String, type: MessageType, userImagePath: String) {
-        self.messageText = messageText
-        self.type = type
-        self.userImagePath = userImagePath
-    }
-}
-
-var fakeData: [Message1] = [
-   /* Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .receiver, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota Ale ma kota Ale ma kota Ale ma kota", type: .receiver, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .receiver, userImagePath: ""),
-    Message(messageText: "Ale ma kota Ale ma kota Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .receiver, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),
-    Message(messageText: "Ale ma kota", type: .sender, userImagePath: ""),*/
-]
-
 class ChatViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var inputBar: InputAccessoryView!
@@ -70,6 +25,9 @@ class ChatViewController: UIViewController {
     // Height of default inputBar Height
     let barHeight: CGFloat = 50
 
+    // First scroll to bottom when user opened chat
+    var scrollToBottomAtStat: Bool = false
+    
     // Input view for message tapping
     override var inputAccessoryView: UIView? {
         get {
@@ -90,13 +48,12 @@ class ChatViewController: UIViewController {
             case .success(let newMessage):
                 let newPath = IndexPath(row: weakSelf.messages.count, section: 0)
                 weakSelf.messages.append(newMessage)
+                weakSelf.tableView.reloadData()
                 if newMessage.receiverMessage {
                     weakSelf.tableView.insertRows(at: [newPath], with: .right)
                 } else {
                     weakSelf.tableView.insertRows(at: [newPath], with: .left)
                 }
-                
-                weakSelf.tableView.scrollToRow(at: IndexPath(row: weakSelf.messages.count - 1, section: 0), at: .bottom, animated: true)
             case .failure: break
             }
         }
@@ -184,8 +141,7 @@ extension ChatViewController: UITableViewDataSource {
             return receiverCell
         } else {
             let senderCell = tableView.dequeueReusableCell(withIdentifier: SenderCell.objectIdentifier, for: indexPath) as! SenderCell
-            senderCell.message.text = message.body
-            senderCell.time.text = message.timeText
+            senderCell.messageModel = message
             return senderCell
         }
     }

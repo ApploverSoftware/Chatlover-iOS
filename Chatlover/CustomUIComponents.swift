@@ -20,30 +20,3 @@ class InputTextView: UITextView {
     }
 }
 
-class MessageLabel: UILabel {
-    
-    var padding = ChatLayoutManager.Messages.textPadding
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        self.layer.cornerRadius = ChatLayoutManager.Messages.messageCornerRadius
-        self.layer.masksToBounds = true
-        self.clipsToBounds = true
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    override func drawText(in rect: CGRect) {
-        super.drawText(in: UIEdgeInsetsInsetRect(rect, padding))
-    }
-    
-    override var intrinsicContentSize: CGSize {
-        let superContentSize = super.intrinsicContentSize
-        let width = superContentSize.width + padding.left + padding.right
-        let height = superContentSize.height + padding.top + padding.bottom
-        return CGSize(width: width, height: height)
-    }
-}
-
