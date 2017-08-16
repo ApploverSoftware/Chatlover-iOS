@@ -11,6 +11,10 @@
 		4DB6769D9C8DDB6CE9EA72AF /* Pods_ChatloverTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D12EF57E47ADF93A805682EB /* Pods_ChatloverTests.framework */; };
 		E640F5751F3DA7D2006E2E65 /* ChannelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E640F5741F3DA7D2006E2E65 /* ChannelsViewController.swift */; };
 		E640F5771F3DA808006E2E65 /* ChannelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E640F5761F3DA808006E2E65 /* ChannelCell.swift */; };
+		E69797181F4033FC00B45E7C /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69797171F4033FC00B45E7C /* Message.swift */; };
+		E697971A1F40341400B45E7C /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69797191F40341400B45E7C /* Channel.swift */; };
+		E697971E1F4036D600B45E7C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E697971D1F4036D600B45E7C /* User.swift */; };
+		E69797201F403BF900B45E7C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E697971F1F403BF900B45E7C /* LoginViewController.swift */; };
 		E6FD66951F3C7DB4004D8813 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FD66941F3C7DB4004D8813 /* AppDelegate.swift */; };
 		E6FD66971F3C7DB4004D8813 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FD66961F3C7DB4004D8813 /* ChatViewController.swift */; };
 		E6FD669A1F3C7DB4004D8813 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E6FD66981F3C7DB4004D8813 /* Main.storyboard */; };
@@ -54,6 +58,10 @@
 		DF5F243175480655FD2E80C7 /* Pods_Chatlover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chatlover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E640F5741F3DA7D2006E2E65 /* ChannelsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelsViewController.swift; sourceTree = "<group>"; };
 		E640F5761F3DA808006E2E65 /* ChannelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelCell.swift; sourceTree = "<group>"; };
+		E69797171F4033FC00B45E7C /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		E69797191F40341400B45E7C /* Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
+		E697971D1F4036D600B45E7C /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		E697971F1F403BF900B45E7C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E6FD66911F3C7DB4004D8813 /* Chatlover.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chatlover.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6FD66941F3C7DB4004D8813 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E6FD66961F3C7DB4004D8813 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -138,6 +146,24 @@
 			name = Channels;
 			sourceTree = "<group>";
 		};
+		E69797161F4033D500B45E7C /* Connection */ = {
+			isa = PBXGroup;
+			children = (
+				E69797171F4033FC00B45E7C /* Message.swift */,
+				E69797191F40341400B45E7C /* Channel.swift */,
+				E697971D1F4036D600B45E7C /* User.swift */,
+			);
+			name = Connection;
+			sourceTree = "<group>";
+		};
+		E697971B1F40365D00B45E7C /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				E697971F1F403BF900B45E7C /* LoginViewController.swift */,
+			);
+			name = Register;
+			sourceTree = "<group>";
+		};
 		E6FD66881F3C7DB4004D8813 = {
 			isa = PBXGroup;
 			children = (
@@ -164,9 +190,11 @@
 			isa = PBXGroup;
 			children = (
 				E6FD66941F3C7DB4004D8813 /* AppDelegate.swift */,
+				E697971B1F40365D00B45E7C /* Register */,
 				E6FD66D21F3CAE7A004D8813 /* LayoutManager */,
 				E640F5731F3DA7BF006E2E65 /* Channels */,
 				E6FD66D51F3CAEA7004D8813 /* ChatViewController */,
+				E69797161F4033D500B45E7C /* Connection */,
 				E6FD66C51F3C808F004D8813 /* ConfigFiles */,
 				E6FD66981F3C7DB4004D8813 /* Main.storyboard */,
 				E6FD669B1F3C7DB4004D8813 /* Assets.xcassets */,
@@ -515,13 +543,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6FD66D91F3CAEDE004D8813 /* CustomUIComponents.swift in Sources */,
+				E69797201F403BF900B45E7C /* LoginViewController.swift in Sources */,
+				E697971A1F40341400B45E7C /* Channel.swift in Sources */,
 				E640F5751F3DA7D2006E2E65 /* ChannelsViewController.swift in Sources */,
 				E6FD66971F3C7DB4004D8813 /* ChatViewController.swift in Sources */,
+				E69797181F4033FC00B45E7C /* Message.swift in Sources */,
 				E6FD66951F3C7DB4004D8813 /* AppDelegate.swift in Sources */,
 				E6FD66CD1F3C86AB004D8813 /* ChatCells.swift in Sources */,
 				E640F5771F3DA808006E2E65 /* ChannelCell.swift in Sources */,
 				E6FD66D71F3CAEBC004D8813 /* InputAccessoryView.swift in Sources */,
 				E6FD66D41F3CAE94004D8813 /* ChatLayoutManager.swift in Sources */,
+				E697971E1F4036D600B45E7C /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

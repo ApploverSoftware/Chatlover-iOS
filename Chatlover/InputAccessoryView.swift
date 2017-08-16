@@ -12,8 +12,12 @@ class InputAccessoryView: UIView, UITextViewDelegate {
     @IBOutlet weak var textView: InputTextView!
     @IBOutlet weak var maxHeight: NSLayoutConstraint!
     
-    var message: String {
+    var message: String? {
         get {
+            guard textView.text != "" else {
+                return nil
+            }
+            
             let messageText = textView.text!
             textView.text = ""
             invalidateIntrinsicContentSize()
@@ -44,5 +48,14 @@ class InputAccessoryView: UIView, UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         invalidateIntrinsicContentSize()
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
+        }
+        
+        return true
     }
 }
