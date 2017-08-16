@@ -18,10 +18,10 @@ class ChannelsViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        title = "CHANNEL"
+        title = "Channels"
         tableView.dataSource = self
         tableView.delegate = self
-        Channel.observChannels { (result) in
+        Channel.fetchChannels { (result) in
             switch result {
             case .success(let channels):
                 self.channels = channels
@@ -66,13 +66,20 @@ extension ChannelsViewController: UITableViewDelegate {
         Channel.joinToChannel(withId: channelToJoin.id) { (result) in
             switch result {
             case .success:
-                ChatViewController.channelId = channelToJoin.id
-                self.performSegue(withIdentifier: "showChat", sender: nil)
+                self.performSegue(withIdentifier: "showChat", sender: ["channelIndex" : indexPath.row])
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let dict = sender as? [String : Int], let channelIndex = dict["channelIndex"] else {
+            return
+        }
         
+        let destVC = segue.destination as! ChatViewController
+        destVC.channel = channels[channelIndex]
     }
 }
 

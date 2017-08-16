@@ -9,22 +9,32 @@
 import UIKit
 import Firebase
 
+
+/// Represents single channel
 class Channel: NSObject {
-    var id: String = ""
-    var name: String = ""
+    let id: String
+    let name: String
     
-    class func observChannels(completionHandler: @escaping (Result<[Channel]>) -> Void) {
+    /// Function to download whole channels
+    ///
+    /// - Parameter completionHandler: [Channel] array of channels otherwise Error
+    class func fetchChannels(completionHandler: @escaping (Result<[Channel]>) -> Void) {
         Database.database().reference().child("channels").observeSingleEvent(of: .value, with: { (snap) in
             guard let channelsDict = snap.value as? [String : Any] else {
                 completionHandler(Result.success([]))
                 return
             }
             let channelsDicts = channelsDict.map { $0.value as! [String : Any] }
-            let channels = channelsDicts.map { Channel.from(dictionary: $0) }
+            let channels = channelsDicts.map { Channel(id: $0["id"] as! String, name: $0["name"] as! String) }
             completionHandler(Result.success(channels))
         })
     }
     
+    /// Function to create channel with given name
+    ///
+    /// - Parameters:
+    ///   - withName: String with name of new channel
+    ///   - completionHandler: True if success otherwise Error
     class func createNewChannel(withName: String, completionHandler: @escaping (Result<Bool>) -> Void) {
         let ref = Database.database().reference().child("channels").childByAutoId()
         let key = ref.key
@@ -38,43 +48,71 @@ class Channel: NSObject {
         }
     }
     
-    class func joinToChannel(withId: String, completionHandler: @escaping (Result<Bool>) -> Void) {
-        Database.database().reference().child("channels").child(withId).child("users").observeSingleEvent(of: .value, with: { (snap) in
+    /// Function for join to particular channel by current logged user
+    ///
+    /// - Parameters:
+    ///   - channelId: String with channel id to which current user will join
+    ///   - completionHandler: True if successful
+    class func joinToChannel(withId channelId: String, completionHandler: @escaping (Result<Bool>) -> Void) {
+        Database.database().reference().child("channels").child(channelId).child("users").observeSingleEvent(of: .value, with: { (snap) in
             if snap.exists() {
                 let dictOfUsers = snap.value as! [String : Any]
                 let userUid = User.currentUser!.uid
                 if dictOfUsers[userUid] == nil {
                     let ref = snap.ref.child(userUid)
                     let values = ["uid" : userUid]
-                    ref.setValue(values, withCompletionBlock: { (error, _) in
-                        if let error = error {
-                            completionHandler(Result.failure(error))
-                        } else {
-                            completionHandler(Result.success(true))
-                        }
-                    })
+                    ref.setValue(values)
+                    completionHandler(Result.success(true))
                 } else {
                     completionHandler(Result.success(true))
                 }
             } else {
                 let userUid = User.currentUser!.uid
-                let ref = Database.database().reference().child("channels").child(withId).child("users").child(userUid)
+                let ref = Database.database().reference().child("channels").child(channelId).child("users").child(userUid)
                 let values = ["uid" : userUid]
-                ref.setValue(values, withCompletionBlock: { (error, _) in
-                    if let error = error {
-                        completionHandler(Result.failure(error))
-                    } else {
-                        completionHandler(Result.success(true))
-                    }
-                })
+                ref.setValue(values)
+                completionHandler(Result.success(true))
             }
         })
     }
     
-    static func from(dictionary: [String : Any]) -> Channel {
-        let channel = Channel()
-        channel.id = dictionary["id"] as! String
-        channel.name = dictionary["name"] as! String
-        return channel
+    
+    /// Function for join to particular channel by group of users
+    ///
+    /// - Parameters:
+    ///   - channelId: String with channel id to which users will be added
+    ///   - usersId: [String] with users uid
+    ///   - completionHandler: True uf successful
+    class func joinToChannel(withId channelId: String, usersId: [String], completionHandler: @escaping (Result<Bool>) -> Void) {
+        Database.database().reference().child("channels").child(channelId).child("users").observeSingleEvent(of: .value, with: { (snap) in
+            if snap.exists() {
+                let dictOfUsers = snap.value as! [String : Any]
+                usersId.forEach { userId in
+                    if dictOfUsers[userId] == nil {
+                        let ref = snap.ref.child(userId)
+                        let values = ["uid" : userId]
+                        ref.setValue(values)
+                    }
+                }
+                completionHandler(Result.success(true))
+            } else {
+                let ref = Database.database().reference().child("channels").child(channelId).child("users")
+                var usersDict: [String : Any] = [:]
+                usersId.forEach { (id) in usersDict[id] = ["uid" : usersId] }
+                let values = ["users" : usersDict]
+                ref.setValue(values)
+                completionHandler(Result.success(true))
+            }
+        })
+    }
+    
+    /// Intializer
+    ///
+    /// - Parameters:
+    ///   - id: String with id of channel
+    ///   - name: String with name of channel
+    init(id: String, name: String) {
+        self.id = id
+        self.name = name
     }
 }

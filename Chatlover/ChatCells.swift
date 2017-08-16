@@ -23,7 +23,7 @@ extension ObjectIdentifier {
 class SenderCell: UITableViewCell, ObjectIdentifier {
     @IBOutlet weak var userImage: UIImageView!
     @IBOutlet weak var message: MessageLabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         message.backgroundColor = UIColor.green

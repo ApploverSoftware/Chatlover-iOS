@@ -265,7 +265,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="71"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="D1c-xq-3rE">
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="userDefaultImage" translatesAutoresizingMaskIntoConstraints="NO" id="D1c-xq-3rE">
                                                     <rect key="frame" x="8" y="30.5" width="32" height="32"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="32" id="Loa-hU-uWt"/>
@@ -273,17 +273,17 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bdR-6H-I0Q" customClass="MessageLabel" customModule="Chatlover" customModuleProvider="target">
-                                                    <rect key="frame" x="56" y="8" width="0.0" height="55"/>
+                                                    <rect key="frame" x="56" y="4" width="0.0" height="63"/>
                                                     <fontDescription key="fontDescription" type="system" weight="thin" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="bdR-6H-I0Q" firstAttribute="top" secondItem="LbD-U2-ACK" secondAttribute="top" constant="8" id="7I1-Cv-ass"/>
+                                                <constraint firstItem="bdR-6H-I0Q" firstAttribute="top" secondItem="LbD-U2-ACK" secondAttribute="top" constant="4" id="7I1-Cv-ass"/>
                                                 <constraint firstItem="bdR-6H-I0Q" firstAttribute="leading" secondItem="D1c-xq-3rE" secondAttribute="trailing" constant="16" id="Jzn-KA-vyz"/>
                                                 <constraint firstAttribute="bottom" secondItem="D1c-xq-3rE" secondAttribute="bottom" constant="8" id="aHT-oX-Ie8"/>
-                                                <constraint firstAttribute="bottom" secondItem="bdR-6H-I0Q" secondAttribute="bottom" constant="8" id="dge-sP-6jg"/>
+                                                <constraint firstAttribute="bottom" secondItem="bdR-6H-I0Q" secondAttribute="bottom" constant="4" id="dge-sP-6jg"/>
                                                 <constraint firstItem="D1c-xq-3rE" firstAttribute="leading" secondItem="LbD-U2-ACK" secondAttribute="leading" constant="8" id="fv7-D7-8Jn"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bdR-6H-I0Q" secondAttribute="trailing" constant="64" id="r8W-5u-yYC"/>
                                             </constraints>
@@ -301,7 +301,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TP8-yr-KZA" customClass="MessageLabel" customModule="Chatlover" customModuleProvider="target">
-                                                    <rect key="frame" x="363" y="8" width="0.0" height="74"/>
+                                                    <rect key="frame" x="363" y="4" width="0.0" height="82"/>
                                                     <fontDescription key="fontDescription" type="system" weight="thin" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -309,8 +309,8 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="TP8-yr-KZA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kUO-mY-TaG" secondAttribute="leading" constant="64" id="C02-v5-fcd"/>
-                                                <constraint firstAttribute="bottom" secondItem="TP8-yr-KZA" secondAttribute="bottom" constant="8" id="D6F-EU-9ep"/>
-                                                <constraint firstItem="TP8-yr-KZA" firstAttribute="top" secondItem="kUO-mY-TaG" secondAttribute="top" constant="8" id="lfK-sR-Pd9"/>
+                                                <constraint firstAttribute="bottom" secondItem="TP8-yr-KZA" secondAttribute="bottom" constant="4" id="D6F-EU-9ep"/>
+                                                <constraint firstItem="TP8-yr-KZA" firstAttribute="top" secondItem="kUO-mY-TaG" secondAttribute="top" constant="4" id="lfK-sR-Pd9"/>
                                                 <constraint firstAttribute="trailing" secondItem="TP8-yr-KZA" secondAttribute="trailing" constant="12" id="uyE-Ke-EpV"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -406,6 +406,9 @@
             <point key="canvasLocation" x="2302" y="239"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="userDefaultImage" width="25" height="25"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="wse-jr-cmx"/>
     </inferredMetricsTieBreakers>

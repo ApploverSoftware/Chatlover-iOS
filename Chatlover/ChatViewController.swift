@@ -58,6 +58,18 @@ class ChatViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var inputBar: InputAccessoryView!
     
+    // Array of messages
+    var messages: [Message] = []
+    
+    // Ref handler for remove observer in case user left the channel
+    var refHandler: (handler: UInt, ref: DatabaseReference)!
+    
+    // Channel which will be observing
+    var channel: Channel!
+    
+    // Height of default inputBar Height
+    let barHeight: CGFloat = 50
+
     override var inputAccessoryView: UIView? {
         get {
             return self.inputBar
@@ -68,16 +80,52 @@ class ChatViewController: UIViewController {
         return true
     }
     
-    let barHeight: CGFloat = 50
+    private func observMessages() {
+        refHandler = Message.observMessages(for: channel.id) { [weak self] (result) in
+            guard let weakSelf = self else { return }
+            switch result {
+            case .success(let newMessage):
+                let newPath = IndexPath(row: weakSelf.messages.count, section: 0)
+                weakSelf.messages.append(newMessage)
+                weakSelf.tableView.insertRows(at: [newPath], with: .automatic)
+                weakSelf.tableView.scrollToRow(at: IndexPath(row: weakSelf.messages.count - 1, section: 0), at: .bottom, animated: true)
+            case .failure: break
+            }
+        }
+    }
     
-    var messages: [Message] = []
-    var refHandler: (handler: UInt, ref: DatabaseReference)!
+    func showKeyboard(notification: Notification) {
+        guard let keyboardFrame = notification.userInfo![UIKeyboardFrameEndUserInfoKey] as? NSValue else {
+            return
+        }
+        let height = keyboardFrame.cgRectValue.height
+        tableView.contentInset.bottom = height
+        tableView.scrollIndicatorInsets.bottom = height
+        tableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .bottom, animated: true)
+    }
     
-    static var channelId: String = ""
+    func hideKeyboard(notification: Notification) {
+        guard let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as? Double else {
+            return
+        }
+        UIView.animate(withDuration: duration) {
+            self.tableView.contentInset.bottom = self.barHeight
+            self.tableView.scrollIndicatorInsets.bottom = self.barHeight
+        }
+    }
+    
+    /// Send message
+    ///
+    /// Send message by write it to particular channel
+    @IBAction func sendMessage(_ sender: UIButton) {
+        if let message = inputBar.message {
+            Message.send(message: message, channelId: channel.id, completionHandler: { _ in })
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "CHAT"
+        title = channel.name
         tableView.backgroundColor = .clear
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = barHeight
@@ -92,20 +140,6 @@ class ChatViewController: UIViewController {
         inputBar.invalidateIntrinsicContentSize()
     }
     
-    private func observMessages() {
-        refHandler = Message.observMessages(for: ChatViewController.channelId) { [weak self] (result) in
-            guard let weakSelf = self else { return }
-            switch result {
-            case .success(let newMessage):
-                let newPath = IndexPath(row: weakSelf.messages.count, section: 0)
-                weakSelf.messages.append(newMessage)
-                weakSelf.tableView.insertRows(at: [newPath], with: .automatic)
-                weakSelf.tableView.scrollToRow(at: IndexPath(row: weakSelf.messages.count - 1, section: 0), at: .bottom, animated: true)
-            case .failure: break
-            }
-        }
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.inputBar.backgroundColor = UIColor.clear
@@ -117,39 +151,6 @@ class ChatViewController: UIViewController {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
         refHandler.ref.removeObserver(withHandle: refHandler.handler)
-    }
-    
-    func showKeyboard(notification: Notification) {
-        guard let keyboardFrame = notification.userInfo![UIKeyboardFrameEndUserInfoKey] as? NSValue,
-        let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as? Double else {
-            return
-        }
-        let height = keyboardFrame.cgRectValue.height
-        tableView.contentInset.bottom = height
-        tableView.scrollIndicatorInsets.bottom = height
-        tableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .bottom, animated: true)
-    }
-    
-    func hideKeyboard(notification: Notification) {
-        guard let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as? Double else {
-            return
-        }
-        
-        UIView.animate(withDuration: duration) {
-            self.tableView.contentInset.bottom = self.barHeight
-            self.tableView.scrollIndicatorInsets.bottom = self.barHeight
-        }
-    }
-    
-    func scrollToBottom() {
-        let rect = CGRect(x: tableView.contentSize.width - 1, y: tableView.contentSize.height + barHeight, width: 1, height: -barHeight)
-        tableView.scrollRectToVisible(rect, animated: true)
-    }
-    
-    @IBAction func sendMessage(_ sender: UIButton) {
-        if let message = inputBar.message {
-            Message.send(message: message, channelId: ChatViewController.channelId, completionHandler: { _ in })
-        }
     }
     
     deinit {

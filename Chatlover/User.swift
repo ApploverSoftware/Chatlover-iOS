@@ -16,6 +16,14 @@ class User: NSObject {
     
     static var currentUser: User?
     
+    /// Register function
+    ///
+    /// - Parameters:
+    ///   - withName: String with user name
+    ///   - email: String with user email
+    ///   - password: String with user password
+    ///   - userImage: UIImage object with picture
+    ///   - completionHandler: Return User if success, otherwise Error
     class func register(withName: String, email: String, password: String, userImage: UIImage, completionHandler: @escaping (Result<User>) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
             guard error == nil else {
@@ -35,6 +43,11 @@ class User: NSObject {
         }
     }
     
+    /// Get info about particular user
+    ///
+    /// - Parameters:
+    ///   - forUserId: String with id of user
+    ///   - completionHandler: Return User if success otherwise Error
     class func info(forUserId: String, completionHandler: @escaping (Result<User>) -> Void) {
         Database.database().reference().child("chat_users").child(forUserId).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.exists() {
@@ -44,7 +57,10 @@ class User: NSObject {
             }
         })
     }
-    
+
+    /// Obser registration of users
+    ///
+    /// - Parameter completionHandler: Return [User] array of registered users if success, otherwise Error
     class func observRegisteredUsers(completionHandler: @escaping (Result<[User]>) -> Void) {
         Database.database().reference().child("chat_users").observe(.value, with: { (snap) in
             if snap.exists() {
@@ -62,6 +78,12 @@ class User: NSObject {
         })
     }
     
+    /// Login function
+    ///
+    /// - Parameters:
+    ///   - email: String with email
+    ///   - password: String with password
+    ///   - completionHandler: Return User if success otherwise Error
     class func login(email: String, password: String, completionHandler: @escaping (Result<User>) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             guard error == nil else {
@@ -79,6 +101,9 @@ class User: NSObject {
         }
     }
     
+    /// Logout function
+    ///
+    /// - Parameter completionHandler: True if success otherwise false
     class func logout(completionHandler: @escaping (Bool) -> Void) {
         do {
             try Auth.auth().signOut()
@@ -88,6 +113,12 @@ class User: NSObject {
         }
     }
     
+    /// Initializer
+    ///
+    /// - Parameters:
+    ///   - fcmToken: String with token for cloud messaging
+    ///   - name: String with name of user
+    ///   - uid: String with uid of user
     init(fcmToken: String, name: String, uid: String) {
         self.fcmToken = fcmToken
         self.name = name

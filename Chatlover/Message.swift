@@ -14,10 +14,12 @@ enum Result<T> {
     case failure(Error)
 }
 
+
+/// Represents single message in chat
 class Message: NSObject {
     // Text message content
     var body: String
-    
+
     // Id of message
     var id: String
     
@@ -34,36 +36,28 @@ class Message: NSObject {
         }
     }
     
-    
-    /// Download all message for particular channel
+    /// Observing messages for given channel
     ///
     /// - Parameters:
-    ///   - channelId: String with channel id
-    ///   - completionHandler: Result<[Message]> with whole messages
-    class func downloadAllMessages(for channelId: String, completionHandler: @escaping (Result<[Message]>) -> Void) {
-        Database.database().reference().child("channels").child(channelId).observe(.value, with: { (snapshot) in
-            guard snapshot.exists() else {
-                return
-            }
-            
-            let data = snapshot.value as! [String: Any]
-        })
-    }
-    
+    ///   - channelId: String with channelId which will be observing
+    ///   - completionHandler: Message object for every single update
+    /// - Returns: Ref and handler of observer. Need for remove when controller disappear
     class func observMessages(for channelId: String, completionHandler: @escaping (Result<Message>) -> Void) -> (handler: UInt, ref: DatabaseReference) {
         let ref = Database.database().reference().child("channels").child(channelId).child("messages")
         let handler = ref.observe(.childAdded, with: { (snap) in
             if snap.exists() {
                 if let messageDict = snap.value as? [String : Any] {
-                    print(messageDict)
-                    let message = Message.from(dictionary: messageDict)
+                    let message = Message(
+                        body: messageDict["body"] as! String,
+                        id: messageDict["id"] as! String,
+                        sender: messageDict["sender"] as! String,
+                        time: messageDict["time"] as! Int)
                     completionHandler(Result.success(message))
                 }
             }
         })
         return (handler: handler, ref: ref)
     }
-    
     
     /// Send message to particular channelId
     ///
@@ -89,14 +83,17 @@ class Message: NSObject {
         
     }
     
+    /// Initializer
+    ///
+    /// - Parameters:
+    ///   - body: String with text of message
+    ///   - id: Strign with id of message
+    ///   - sender: String with id of user which send this message
+    ///   - time: Int with timestamp
     init(body: String, id: String, sender: String, time: Int) {
         self.body = body
         self.id = id
         self.sender = sender
         self.time = time
-    }
-    
-    static func from(dictionary: [String: Any]) -> Message {
-        return Message(body: dictionary["body"] as! String, id: dictionary["id"] as! String, sender: dictionary["sender"] as! String, time: dictionary["time"] as! Int)
     }
 }
