@@ -14,7 +14,6 @@ enum Result<T> {
     case failure(Error)
 }
 
-
 /// Represents single message in chat
 class Message: NSObject {
     // Text message content
@@ -33,6 +32,15 @@ class Message: NSObject {
     var receiverMessage: Bool {
         get {
             return User.currentUser!.uid == sender
+        }
+    }
+    
+    var timeText: String {
+        get {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "EEE HH:mm"
+            let date = Date(timeIntervalSince1970: Double(time / 1000))
+            return formatter.string(from: date)
         }
     }
     
@@ -69,7 +77,7 @@ class Message: NSObject {
         Database.database().reference().child("channels").child(channelId).child("messages").observeSingleEvent(of: .value, with: { (snap) in
             let ref = snap.ref.childByAutoId()
             let key = ref.key
-            let timestamp = Int(Date().timeIntervalSince1970)
+            let timestamp = Int(Date().timeIntervalSince1970 * 1000)
             let userUid = User.currentUser!.uid
             let values: [String: Any] = ["body" : message, "id": key, "sender": userUid, "time": timestamp]
             ref.setValue(values, withCompletionBlock: { (error, _) in
@@ -80,7 +88,6 @@ class Message: NSObject {
                 }
             })
         })
-        
     }
     
     /// Initializer

@@ -21,6 +21,10 @@ class ChannelsViewController: UIViewController {
         title = "Channels"
         tableView.dataSource = self
         tableView.delegate = self
+        fetchChannels()
+    }
+    
+    private func fetchChannels() {
         Channel.fetchChannels { (result) in
             switch result {
             case .success(let channels):
@@ -38,7 +42,7 @@ class ChannelsViewController: UIViewController {
         })
         let confirmAction = UIAlertAction(title: "Create", style: .default, handler: {(_ action: UIAlertAction) -> Void in
             let channelName = alertController.textFields![0].text!
-            Channel.createNewChannel(withName: channelName) { _ in }
+            Channel.createNewChannel(withName: channelName) { _ in self.fetchChannels() }
         })
         alertController.addAction(confirmAction)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {(_ action: UIAlertAction) -> Void in
@@ -62,8 +66,10 @@ class ChannelsViewController: UIViewController {
 // MARK: - UITableViewDelegate
 extension ChannelsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.tableView.isUserInteractionEnabled = false
         let channelToJoin = channels[indexPath.row]
         Channel.joinToChannel(withId: channelToJoin.id) { (result) in
+            self.tableView.isUserInteractionEnabled = true
             switch result {
             case .success:
                 self.performSegue(withIdentifier: "showChat", sender: ["channelIndex" : indexPath.row])

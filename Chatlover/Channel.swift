@@ -14,6 +14,7 @@ import Firebase
 class Channel: NSObject {
     let id: String
     let name: String
+    let usersIds: [String]
     
     /// Function to download whole channels
     ///
@@ -25,7 +26,7 @@ class Channel: NSObject {
                 return
             }
             let channelsDicts = channelsDict.map { $0.value as! [String : Any] }
-            let channels = channelsDicts.map { Channel(id: $0["id"] as! String, name: $0["name"] as! String) }
+            let channels = channelsDicts.map { Channel(dict: $0) }
             completionHandler(Result.success(channels))
         })
     }
@@ -76,7 +77,6 @@ class Channel: NSObject {
         })
     }
     
-    
     /// Function for join to particular channel by group of users
     ///
     /// - Parameters:
@@ -109,10 +109,15 @@ class Channel: NSObject {
     /// Intializer
     ///
     /// - Parameters:
-    ///   - id: String with id of channel
-    ///   - name: String with name of channel
-    init(id: String, name: String) {
-        self.id = id
-        self.name = name
+    ///   - dict: Dictionary with Channel data
+    init(dict: [String: Any]) {
+        self.id = dict["id"] as! String
+        self.name = dict["name"] as! String
+        if let userDicts = dict["users"] as? [String: Any] {
+            let ids = userDicts.map { $0.key }
+            self.usersIds = ids
+        } else {
+            self.usersIds = []
+        }
     }
 }

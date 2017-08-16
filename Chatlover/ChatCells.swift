@@ -21,20 +21,27 @@ extension ObjectIdentifier {
 }
 
 class SenderCell: UITableViewCell, ObjectIdentifier {
+    @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var name: UILabel!
     @IBOutlet weak var userImage: UIImageView!
     @IBOutlet weak var message: MessageLabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        message.adjustsFontSizeToFitWidth = true
+        message.translatesAutoresizingMaskIntoConstraints = false
         message.backgroundColor = UIColor.green
     }
 }
 
 class ReceiverCell: UITableViewCell, ObjectIdentifier {
+    @IBOutlet weak var time: UILabel!
     @IBOutlet weak var message: MessageLabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        message.adjustsFontSizeToFitWidth = true
+        message.translatesAutoresizingMaskIntoConstraints = false
         message.backgroundColor = UIColor.red
     }
 }

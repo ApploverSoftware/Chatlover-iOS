@@ -70,16 +70,19 @@ class ChatViewController: UIViewController {
     // Height of default inputBar Height
     let barHeight: CGFloat = 50
 
+    // Input view for message tapping
     override var inputAccessoryView: UIView? {
         get {
             return self.inputBar
         }
     }
     
+    // Show inpuBar
     override var canBecomeFirstResponder: Bool{
         return true
     }
     
+    // Obser messages
     private func observMessages() {
         refHandler = Message.observMessages(for: channel.id) { [weak self] (result) in
             guard let weakSelf = self else { return }
@@ -87,7 +90,12 @@ class ChatViewController: UIViewController {
             case .success(let newMessage):
                 let newPath = IndexPath(row: weakSelf.messages.count, section: 0)
                 weakSelf.messages.append(newMessage)
-                weakSelf.tableView.insertRows(at: [newPath], with: .automatic)
+                if newMessage.receiverMessage {
+                    weakSelf.tableView.insertRows(at: [newPath], with: .right)
+                } else {
+                    weakSelf.tableView.insertRows(at: [newPath], with: .left)
+                }
+                
                 weakSelf.tableView.scrollToRow(at: IndexPath(row: weakSelf.messages.count - 1, section: 0), at: .bottom, animated: true)
             case .failure: break
             }
@@ -101,7 +109,9 @@ class ChatViewController: UIViewController {
         let height = keyboardFrame.cgRectValue.height
         tableView.contentInset.bottom = height
         tableView.scrollIndicatorInsets.bottom = height
-        tableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .bottom, animated: true)
+        if messages.count > 0 {
+            tableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .bottom, animated: true)
+        }
     }
     
     func hideKeyboard(notification: Notification) {
@@ -170,11 +180,18 @@ extension ChatViewController: UITableViewDataSource {
         if message.receiverMessage {
             let receiverCell = tableView.dequeueReusableCell(withIdentifier: ReceiverCell.objectIdentifier, for: indexPath) as! ReceiverCell
             receiverCell.message.text = message.body
+            receiverCell.time.text = message.timeText
             return receiverCell
         } else {
             let senderCell = tableView.dequeueReusableCell(withIdentifier: SenderCell.objectIdentifier, for: indexPath) as! SenderCell
             senderCell.message.text = message.body
+            senderCell.time.text = message.timeText
             return senderCell
         }
     }
+}
+
+// MARK: - UITableViewDelegate
+extension ChatViewController: UITableViewDelegate {
+    
 }
