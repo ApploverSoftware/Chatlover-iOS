@@ -14,7 +14,7 @@ class ChatViewController: UIViewController {
     @IBOutlet var inputBar: InputAccessoryView!
     
     // Array of messages
-    var messages: [Message] = []
+    var messages: [MessageModel] = []
     
     // Ref handler for remove observer in case user left the channel
     var refHandler: (handler: UInt, ref: DatabaseReference)!
@@ -42,9 +42,10 @@ class ChatViewController: UIViewController {
         refHandler = Message.observMessages(for: channel.id) { [weak self] (result) in
             guard let weakSelf = self else { return }
             switch result {
-            case .success(let newMessage):
+            case .success(let message):
+                let newMessage = MessageModel(message: message)
                 // Append only when this is new message
-                guard !weakSelf.messages.contains(where: { $0.id == newMessage.id }) else {
+                guard !weakSelf.messages.contains(where: { $0.message.id == newMessage.message.id }) else {
                     return
                 }
                 
@@ -60,7 +61,7 @@ class ChatViewController: UIViewController {
                         let newPath = IndexPath(row: 0, section: 0)
                         weakSelf.insertToTableView(newMesssages: newMessage, at: [newPath])
                     } else { // Insert day separator model before new cell model
-                        let separatorMessage = Message(body: "", id: "", sender: "", time: newMessage.time)
+                        let separatorMessage = MessageModel(message: Message(body: "", id: "", sender: "", time: newMessage.message.time))
                         separatorMessage.separatorCell = true
                         weakSelf.messages.insert(contentsOf: [separatorMessage, newMessage], at: 0)
                         let separatorPath = IndexPath(row: 0, section: 0)
@@ -74,7 +75,7 @@ class ChatViewController: UIViewController {
         }
     }
     
-    private func insertToTableView(newMesssages: Message, at indexPaths: [IndexPath]) {
+    private func insertToTableView(newMesssages: MessageModel, at indexPaths: [IndexPath]) {
         if newMesssages.receiverMessage {
             tableView.insertRows(at: indexPaths, with: .right)
         } else {
@@ -87,7 +88,8 @@ class ChatViewController: UIViewController {
         Message.getAllMessages(for: channel.id) { [weak self] (result) in
             guard let weakSelf = self else { return }
             switch result {
-            case .success(let messages):
+            case .success(let newMessages):
+                let messages = newMessages.map { MessageModel(message: $0) }
                 // Reversed because tableView is rotated by 180 degree
                 weakSelf.messages = messages.reversed()
                 if ChatLayoutManager.ChatTableView.daySeparator {
@@ -105,7 +107,7 @@ class ChatViewController: UIViewController {
     /// property seting to true seaprator model is for showing day 
     /// separator cell with day name + date in format: --- EEEE dd.MM ---
     private func insertSeparators() {
-        var separatedMessageArray: [Message] = []
+        var separatedMessageArray: [MessageModel] = []
         messages.enumerated().forEach { (index, message) in
             // First index
             if index == 0 {
@@ -115,7 +117,7 @@ class ChatViewController: UIViewController {
                 if Calendar.current.isDate(previousMessage.date, inSameDayAs: message.date) {
                     separatedMessageArray.append(message)
                 } else {
-                    let separatorModel = Message(body: "", id: "", sender: "", time: previousMessage.time)
+                    let separatorModel = MessageModel(message: Message(body: "", id: "", sender: "", time: previousMessage.message.time))
                     separatorModel.separatorCell = true
                     separatedMessageArray.append(separatorModel)
                     separatedMessageArray.append(message)
@@ -203,7 +205,7 @@ extension ChatViewController: UITableViewDataSource {
         } else {
             if message.receiverMessage {
                 let receiverCell = tableView.dequeueReusableCell(withIdentifier: ReceiverCell.objectIdentifier, for: indexPath) as! ReceiverCell
-                receiverCell.message.text = message.body
+                receiverCell.message.text = message.messageText
                 receiverCell.time.text = message.timeText
                 receiverCell.transform = CGAffineTransform(scaleX: 1, y: -1)
                 return receiverCell

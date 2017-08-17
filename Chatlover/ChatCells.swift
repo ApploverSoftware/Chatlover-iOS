@@ -27,11 +27,11 @@ class SenderCell: UITableViewCell, ObjectIdentifier {
     @IBOutlet weak var message: UITextView!
     @IBOutlet weak var messageContainer: UIView!
 
-    var messageModel: Message! {
+    var messageModel: MessageModel! {
         didSet {
             time.text = messageModel.timeText
-            message.text = messageModel.body
-            ChatUser.getChatUser(withId: messageModel.sender) { (result) in
+            message.text = messageModel.messageText
+            ChatUser.getChatUser(withId: messageModel.ownerId) { (result) in
                 switch result {
                 case .success(let user):
                     self.name.text = user.name
@@ -71,7 +71,7 @@ class ReceiverCell: UITableViewCell, ObjectIdentifier {
 class DaySeparatorCell: UITableViewCell, ObjectIdentifier {
     @IBOutlet weak var date: UILabel!
     
-    var messageModel: Message! {
+    var messageModel: MessageModel! {
         didSet {
             date.text = messageModel.separatorTimeText
         }

@@ -17,6 +17,11 @@ class APIError: Error {
     }
 }
 
+enum Result<T> {
+    case success(T)
+    case failure(Error)
+}
+
 class ChatUser: NSObject {
     var fcmToken: String
     var uid: String

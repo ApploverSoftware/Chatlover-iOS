@@ -9,59 +9,12 @@
 import UIKit
 import Firebase
 
-enum Result<T> {
-    case success(T)
-    case failure(Error)
-}
-
 /// Represents single message in chat
-class Message: NSObject {
-    // Text message content
-    var body: String
-
-    // Id of message
-    var id: String
-    
-    // Id of user
-    var sender: String
-    
-    // Timestamp
-    var time: Int
-    
-    // Date from timestamp
-    var date: Date {
-        get {
-            return Date(timeIntervalSince1970: Double(time / 1000))
-        }
-    }
-    
-    // True if message belongs to current logged user
-    var receiverMessage: Bool {
-        get {
-            return ChatUser.currentUser!.uid == sender
-        }
-    }
-    
-    // Text to show as date text in every message cell
-    var timeText: String {
-        get {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "EEE HH:mm"
-            return formatter.string(from: date)
-        }
-    }
-    
-    // True when message is separator 
-    var separatorCell: Bool = false
-    
-    // Text to show as day text in day separator cell
-    var separatorTimeText: String {
-        get {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "EEEE dd.MM"
-            return formatter.string(from: date)
-        }
-    }
+class Message: NSObject, MessageProtocol {
+    let body: String
+    let id: String
+    let sender: String
+    let time: Int
     
     /// Get whole message assigned to channel
     ///
@@ -141,7 +94,7 @@ class Message: NSObject {
     ///   - id: Strign with id of message
     ///   - sender: String with id of user which send this message
     ///   - time: Int with timestamp
-    init(body: String, id: String, sender: String, time: Int) {
+    required init(body: String, id: String, sender: String, time: Int) {
         self.body = body
         self.id = id
         self.sender = sender
