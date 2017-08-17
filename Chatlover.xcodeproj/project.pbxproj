@@ -9,11 +9,12 @@
 /* Begin PBXBuildFile section */
 		45C36EEF38D63FA53DF5013B /* Pods_ChatloverUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F47520114F2D0EC6555A9FB4 /* Pods_ChatloverUITests.framework */; };
 		4DB6769D9C8DDB6CE9EA72AF /* Pods_ChatloverTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D12EF57E47ADF93A805682EB /* Pods_ChatloverTests.framework */; };
+		E607CC551F45E0F200FC1B7C /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = E607CC541F45E0F200FC1B7C /* Login.swift */; };
 		E640F5751F3DA7D2006E2E65 /* ChannelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E640F5741F3DA7D2006E2E65 /* ChannelsViewController.swift */; };
 		E640F5771F3DA808006E2E65 /* ChannelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E640F5761F3DA808006E2E65 /* ChannelCell.swift */; };
 		E69797181F4033FC00B45E7C /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69797171F4033FC00B45E7C /* Message.swift */; };
 		E697971A1F40341400B45E7C /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69797191F40341400B45E7C /* Channel.swift */; };
-		E697971E1F4036D600B45E7C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E697971D1F4036D600B45E7C /* User.swift */; };
+		E697971E1F4036D600B45E7C /* ChatUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E697971D1F4036D600B45E7C /* ChatUser.swift */; };
 		E69797201F403BF900B45E7C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E697971F1F403BF900B45E7C /* LoginViewController.swift */; };
 		E6FD66951F3C7DB4004D8813 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FD66941F3C7DB4004D8813 /* AppDelegate.swift */; };
 		E6FD66971F3C7DB4004D8813 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6FD66961F3C7DB4004D8813 /* ChatViewController.swift */; };
@@ -56,11 +57,12 @@
 		D12EF57E47ADF93A805682EB /* Pods_ChatloverTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatloverTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D843F4DCE75A0F6D086758D6 /* Pods-Chatlover.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Chatlover.release.xcconfig"; path = "Pods/Target Support Files/Pods-Chatlover/Pods-Chatlover.release.xcconfig"; sourceTree = "<group>"; };
 		DF5F243175480655FD2E80C7 /* Pods_Chatlover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chatlover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E607CC541F45E0F200FC1B7C /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		E640F5741F3DA7D2006E2E65 /* ChannelsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelsViewController.swift; sourceTree = "<group>"; };
 		E640F5761F3DA808006E2E65 /* ChannelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelCell.swift; sourceTree = "<group>"; };
 		E69797171F4033FC00B45E7C /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		E69797191F40341400B45E7C /* Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
-		E697971D1F4036D600B45E7C /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		E697971D1F4036D600B45E7C /* ChatUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatUser.swift; sourceTree = "<group>"; };
 		E697971F1F403BF900B45E7C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E6FD66911F3C7DB4004D8813 /* Chatlover.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chatlover.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6FD66941F3C7DB4004D8813 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -137,6 +139,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E607CC531F45E0E100FC1B7C /* Tmp */ = {
+			isa = PBXGroup;
+			children = (
+				E607CC541F45E0F200FC1B7C /* Login.swift */,
+			);
+			name = Tmp;
+			sourceTree = "<group>";
+		};
 		E640F5731F3DA7BF006E2E65 /* Channels */ = {
 			isa = PBXGroup;
 			children = (
@@ -151,7 +161,7 @@
 			children = (
 				E69797171F4033FC00B45E7C /* Message.swift */,
 				E69797191F40341400B45E7C /* Channel.swift */,
-				E697971D1F4036D600B45E7C /* User.swift */,
+				E697971D1F4036D600B45E7C /* ChatUser.swift */,
 			);
 			name = Connection;
 			sourceTree = "<group>";
@@ -195,6 +205,7 @@
 				E640F5731F3DA7BF006E2E65 /* Channels */,
 				E6FD66D51F3CAEA7004D8813 /* ChatViewController */,
 				E69797161F4033D500B45E7C /* Connection */,
+				E607CC531F45E0E100FC1B7C /* Tmp */,
 				E6FD66C51F3C808F004D8813 /* ConfigFiles */,
 				E6FD66981F3C7DB4004D8813 /* Main.storyboard */,
 				E6FD669B1F3C7DB4004D8813 /* Assets.xcassets */,
@@ -544,6 +555,7 @@
 			files = (
 				E6FD66D91F3CAEDE004D8813 /* CustomUIComponents.swift in Sources */,
 				E69797201F403BF900B45E7C /* LoginViewController.swift in Sources */,
+				E607CC551F45E0F200FC1B7C /* Login.swift in Sources */,
 				E697971A1F40341400B45E7C /* Channel.swift in Sources */,
 				E640F5751F3DA7D2006E2E65 /* ChannelsViewController.swift in Sources */,
 				E6FD66971F3C7DB4004D8813 /* ChatViewController.swift in Sources */,
@@ -553,7 +565,7 @@
 				E640F5771F3DA808006E2E65 /* ChannelCell.swift in Sources */,
 				E6FD66D71F3CAEBC004D8813 /* InputAccessoryView.swift in Sources */,
 				E6FD66D41F3CAE94004D8813 /* ChatLayoutManager.swift in Sources */,
-				E697971E1F4036D600B45E7C /* User.swift in Sources */,
+				E697971E1F4036D600B45E7C /* ChatUser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

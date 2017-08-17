@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ChannelsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
@@ -54,13 +55,18 @@ class ChannelsViewController: UIViewController {
     }
     
     @IBAction func logout(_ sender: UIBarButtonItem) {
-        User.logout { (success) in
-            if success {
-                self.navigationController?.popViewController(animated: true)
-            }
+        do {
+            try Auth.auth().signOut()
+            InstanceID.instanceID().deleteID(handler: { (error) in
+                if error == nil {
+                    InstanceID.instanceID().token()
+                    self.navigationController?.popViewController(animated: true)
+                }
+            })
+        } catch {
+        
         }
     }
-    
 }
 
 // MARK: - UITableViewDelegate

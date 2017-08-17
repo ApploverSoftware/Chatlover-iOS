@@ -58,7 +58,7 @@ class Channel: NSObject {
         Database.database().reference().child("channels").child(channelId).child("users").observeSingleEvent(of: .value, with: { (snap) in
             if snap.exists() {
                 let dictOfUsers = snap.value as! [String : Any]
-                let userUid = User.currentUser!.uid
+                let userUid = ChatUser.currentUser!.uid
                 if dictOfUsers[userUid] == nil {
                     let ref = snap.ref.child(userUid)
                     let values = ["uid" : userUid]
@@ -68,7 +68,7 @@ class Channel: NSObject {
                     completionHandler(Result.success(true))
                 }
             } else {
-                let userUid = User.currentUser!.uid
+                let userUid = ChatUser.currentUser!.uid
                 let ref = Database.database().reference().child("channels").child(channelId).child("users").child(userUid)
                 let values = ["uid" : userUid]
                 ref.setValue(values)

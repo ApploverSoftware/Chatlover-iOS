@@ -31,7 +31,7 @@ class SenderCell: UITableViewCell, ObjectIdentifier {
         didSet {
             time.text = messageModel.timeText
             message.text = messageModel.body
-            User.info(forUserId: messageModel.sender) { (result) in
+            ChatUser.getChatUser(withId: messageModel.sender) { (result) in
                 switch result {
                 case .success(let user):
                     self.name.text = user.name

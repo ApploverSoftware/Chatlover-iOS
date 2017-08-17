@@ -15,10 +15,10 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     
     @IBAction func login() {
-        User.login(email: loginEmail.text!, password: loginPassword.text!) { (result) in
+        Login.login(email: loginEmail.text!, password: loginPassword.text!) { (result) in
             switch result {
             case .success(let user):
-                User.currentUser = user
+                ChatUser.currentUser = user
                 self.performSegue(withIdentifier: "showConversations", sender: nil)
             case .failure(let error):
                 print(error.localizedDescription)
@@ -29,10 +29,10 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         if let currentUser = Auth.auth().currentUser {
-            User.info(forUserId: currentUser.uid) { (result) in
+            ChatUser.getChatUser(withId: currentUser.uid) { result in
                 switch result {
                 case .success(let user):
-                    User.currentUser = user
+                    ChatUser.currentUser = user
                     self.performSegue(withIdentifier: "showConversations", sender: nil)
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -49,10 +49,10 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var registerButton: UIButton!
     
     @IBAction func register() {
-        User.register(withName: registerName.text!, email: registerEmail.text!, password: registerPassword.text!, userImage: UIImage()) { result in
+        Login.register(withName: registerName.text!, email: registerEmail.text!, password: registerPassword.text!, userImage: UIImage()) { result in
             switch result {
             case .success(let user):
-                User.currentUser = user
+                ChatUser.currentUser = user
                 self.performSegue(withIdentifier: "showConversations", sender: nil)
             case .failure(let error):
                 print(error.localizedDescription)

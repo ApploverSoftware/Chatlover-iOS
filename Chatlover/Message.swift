@@ -38,7 +38,7 @@ class Message: NSObject {
     // True if message belongs to current logged user
     var receiverMessage: Bool {
         get {
-            return User.currentUser!.uid == sender
+            return ChatUser.currentUser!.uid == sender
         }
     }
     
@@ -122,7 +122,7 @@ class Message: NSObject {
             let ref = snap.ref.childByAutoId()
             let key = ref.key
             let timestamp = Int(Date().timeIntervalSince1970 * 1000)
-            let userUid = User.currentUser!.uid
+            let userUid = ChatUser.currentUser!.uid
             let values: [String: Any] = ["body" : message, "id": key, "sender": userUid, "time": timestamp]
             ref.setValue(values, withCompletionBlock: { (error, _) in
                 if error != nil {
