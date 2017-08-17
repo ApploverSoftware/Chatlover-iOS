@@ -43,6 +43,8 @@ class SenderCell: UITableViewCell, ObjectIdentifier {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        transform = CGAffineTransform(scaleX: 1, y: -1)
+        
         messageContainer.layer.cornerRadius = ChatLayoutManager.Messages.messageCornerRadius
         messageContainer.backgroundColor = ChatLayoutManager.Messages.senderBackgroundColor
         message.backgroundColor = ChatLayoutManager.Messages.senderBackgroundColor
@@ -59,8 +61,17 @@ class ReceiverCell: UITableViewCell, ObjectIdentifier {
     @IBOutlet weak var message: UITextView!
     @IBOutlet weak var messageContainer: UIView!
     
+    var messageModel: MessageModel! {
+        didSet {
+            time.text = messageModel.timeText
+            message.text = messageModel.messageText
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        transform = CGAffineTransform(scaleX: 1, y: -1)
+        
         messageContainer.layer.cornerRadius = ChatLayoutManager.Messages.messageCornerRadius
         messageContainer.backgroundColor = ChatLayoutManager.Messages.receiverBackgroundColor
         message.backgroundColor = ChatLayoutManager.Messages.receiverBackgroundColor
@@ -75,5 +86,10 @@ class DaySeparatorCell: UITableViewCell, ObjectIdentifier {
         didSet {
             date.text = messageModel.separatorTimeText
         }
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        transform = CGAffineTransform(scaleX: 1, y: -1)
     }
 }

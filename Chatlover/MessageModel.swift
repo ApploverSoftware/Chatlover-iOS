@@ -18,7 +18,7 @@ protocol MessageProtocol: class {
 }
 
 class MessageModel {
-    unowned let message: MessageProtocol
+    let message: MessageProtocol
     
     // Date from timestamp
     var date: Date {

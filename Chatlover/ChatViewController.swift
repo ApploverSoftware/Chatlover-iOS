@@ -199,20 +199,16 @@ extension ChatViewController: UITableViewDataSource {
         let message = messages[indexPath.row]
         if message.separatorCell {
             let separatorCell = tableView.dequeueReusableCell(withIdentifier: DaySeparatorCell.objectIdentifier, for: indexPath) as! DaySeparatorCell
-            separatorCell.date.text = message.separatorTimeText
-            separatorCell.transform = CGAffineTransform(scaleX: 1, y: -1)
+            separatorCell.messageModel = message
             return separatorCell
         } else {
             if message.receiverMessage {
                 let receiverCell = tableView.dequeueReusableCell(withIdentifier: ReceiverCell.objectIdentifier, for: indexPath) as! ReceiverCell
-                receiverCell.message.text = message.messageText
-                receiverCell.time.text = message.timeText
-                receiverCell.transform = CGAffineTransform(scaleX: 1, y: -1)
+                receiverCell.messageModel = message
                 return receiverCell
             } else {
                 let senderCell = tableView.dequeueReusableCell(withIdentifier: SenderCell.objectIdentifier, for: indexPath) as! SenderCell
                 senderCell.messageModel = message
-                senderCell.transform = CGAffineTransform(scaleX: 1, y: -1)
                 return senderCell
             }
         }
