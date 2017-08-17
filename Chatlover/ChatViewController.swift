@@ -37,26 +37,50 @@ class ChatViewController: UIViewController {
         return true
     }
     
-    // Obser messages
+    // Observ new messages messages
     private func observMessages() {
         refHandler = Message.observMessages(for: channel.id) { [weak self] (result) in
             guard let weakSelf = self else { return }
             switch result {
             case .success(let newMessage):
                 // Append only when this is new message
-                if !weakSelf.messages.contains(where: { $0.id == newMessage.id }) {
+                guard !weakSelf.messages.contains(where: { $0.id == newMessage.id }) else {
+                    return
+                }
+                
+                // Check if messages array is empty
+                if weakSelf.messages.isEmpty {
                     weakSelf.messages.insert(newMessage, at: 0)
                     let newPath = IndexPath(row: 0, section: 0)
-                    if newMessage.receiverMessage {
-                        weakSelf.tableView.insertRows(at: [newPath], with: .right)
-                    } else {
-                        weakSelf.tableView.insertRows(at: [newPath], with: .left)
+                    weakSelf.insertToTableView(newMesssages: newMessage, at: [newPath])
+                } else {
+                    // Check if message date is in same day as previous
+                    if Calendar.current.isDate(newMessage.date, inSameDayAs: weakSelf.messages.first!.date) {
+                        weakSelf.messages.insert(newMessage, at: 0)
+                        let newPath = IndexPath(row: 0, section: 0)
+                        weakSelf.insertToTableView(newMesssages: newMessage, at: [newPath])
+                    } else { // Insert day separator model before new cell model
+                        let separatorMessage = Message(body: "", id: "", sender: "", time: newMessage.time)
+                        separatorMessage.separatorCell = true
+                        weakSelf.messages.insert(contentsOf: [separatorMessage, newMessage], at: 0)
+                        let separatorPath = IndexPath(row: 0, section: 0)
+                        let newMessagePath = IndexPath(row: 1, section: 0)
+                        weakSelf.insertToTableView(newMesssages: newMessage, at: [separatorPath, newMessagePath])
                     }
-                    weakSelf.tableView.scrollToRow(at: newPath, at: .top, animated: true)
                 }
+                
             case .failure: break
             }
         }
+    }
+    
+    private func insertToTableView(newMesssages: Message, at indexPaths: [IndexPath]) {
+        if newMesssages.receiverMessage {
+            tableView.insertRows(at: indexPaths, with: .right)
+        } else {
+            tableView.insertRows(at: indexPaths, with: .left)
+        }
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
     }
     
     private func getAllMessages() {
@@ -64,12 +88,41 @@ class ChatViewController: UIViewController {
             guard let weakSelf = self else { return }
             switch result {
             case .success(let messages):
-                weakSelf.messages = messages.sorted(by: { $0.0.time < $0.1.time }).reversed()
+                // Reversed because tableView is rotated by 180 degree
+                weakSelf.messages = messages.reversed()
+                if ChatLayoutManager.ChatTableView.daySeparator {
+                    weakSelf.insertSeparators()
+                }
                 weakSelf.tableView.reloadData()
                 weakSelf.observMessages()
             case .failure: break
             }
         }
+    }
+    
+    
+    /// Function insert separator model as message with separatorCell 
+    /// property seting to true seaprator model is for showing day 
+    /// separator cell with day name + date in format: --- EEEE dd.MM ---
+    private func insertSeparators() {
+        var separatedMessageArray: [Message] = []
+        messages.enumerated().forEach { (index, message) in
+            // First index
+            if index == 0 {
+                separatedMessageArray.append(message)
+            } else {
+                let previousMessage = messages[index - 1]
+                if Calendar.current.isDate(previousMessage.date, inSameDayAs: message.date) {
+                    separatedMessageArray.append(message)
+                } else {
+                    let separatorModel = Message(body: "", id: "", sender: "", time: previousMessage.time)
+                    separatorModel.separatorCell = true
+                    separatedMessageArray.append(separatorModel)
+                    separatedMessageArray.append(message)
+                }
+            }
+        }
+        messages = separatedMessageArray
     }
     
     func showKeyboard(notification: Notification) {
@@ -108,12 +161,12 @@ class ChatViewController: UIViewController {
         tableView.contentInset.top = barHeight
         tableView.scrollIndicatorInsets.top = barHeight
         tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
+        getAllMessages()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         inputBar.invalidateIntrinsicContentSize()
-        getAllMessages()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -142,18 +195,24 @@ extension ChatViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let message = messages[indexPath.row]
-        
-        if message.receiverMessage {
-            let receiverCell = tableView.dequeueReusableCell(withIdentifier: ReceiverCell.objectIdentifier, for: indexPath) as! ReceiverCell
-            receiverCell.message.text = message.body
-            receiverCell.time.text = message.timeText
-            receiverCell.transform = CGAffineTransform(scaleX: 1, y: -1)
-            return receiverCell
+        if message.separatorCell {
+            let separatorCell = tableView.dequeueReusableCell(withIdentifier: DaySeparatorCell.objectIdentifier, for: indexPath) as! DaySeparatorCell
+            separatorCell.date.text = message.separatorTimeText
+            separatorCell.transform = CGAffineTransform(scaleX: 1, y: -1)
+            return separatorCell
         } else {
-            let senderCell = tableView.dequeueReusableCell(withIdentifier: SenderCell.objectIdentifier, for: indexPath) as! SenderCell
-            senderCell.messageModel = message
-            senderCell.transform = CGAffineTransform(scaleX: 1, y: -1)
-            return senderCell
+            if message.receiverMessage {
+                let receiverCell = tableView.dequeueReusableCell(withIdentifier: ReceiverCell.objectIdentifier, for: indexPath) as! ReceiverCell
+                receiverCell.message.text = message.body
+                receiverCell.time.text = message.timeText
+                receiverCell.transform = CGAffineTransform(scaleX: 1, y: -1)
+                return receiverCell
+            } else {
+                let senderCell = tableView.dequeueReusableCell(withIdentifier: SenderCell.objectIdentifier, for: indexPath) as! SenderCell
+                senderCell.messageModel = message
+                senderCell.transform = CGAffineTransform(scaleX: 1, y: -1)
+                return senderCell
+            }
         }
     }
 }

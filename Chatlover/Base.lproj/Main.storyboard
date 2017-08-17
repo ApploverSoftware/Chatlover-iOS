@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -309,6 +310,7 @@
                                                 <constraint firstItem="7HX-cg-nFg" firstAttribute="leading" secondItem="F4Q-Gn-1rV" secondAttribute="trailing" constant="8" id="AQb-c3-K9U"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Zrf-DH-44j" secondAttribute="trailing" constant="64" id="Kys-Bg-7bJ"/>
                                                 <constraint firstItem="F4Q-Gn-1rV" firstAttribute="leading" secondItem="Zrf-DH-44j" secondAttribute="leading" constant="8" id="Ttn-Ea-Zxq"/>
+                                                <constraint firstItem="Zt2-Ig-shD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LbD-U2-ACK" secondAttribute="leadingMargin" constant="16" id="ZGD-UP-p7c"/>
                                                 <constraint firstAttribute="bottom" secondItem="D1c-xq-3rE" secondAttribute="bottom" constant="4" id="aHT-oX-Ie8"/>
                                                 <constraint firstItem="D1c-xq-3rE" firstAttribute="leading" secondItem="LbD-U2-ACK" secondAttribute="leading" constant="8" id="fv7-D7-8Jn"/>
                                                 <constraint firstItem="Zrf-DH-44j" firstAttribute="top" secondItem="7HX-cg-nFg" secondAttribute="bottom" id="he5-CO-yjQ"/>
@@ -371,6 +373,58 @@
                                             <outlet property="message" destination="jIE-Sm-1vT" id="4z4-sI-Rp0"/>
                                             <outlet property="messageContainer" destination="utf-Fy-wc8" id="kRg-ND-KWZ"/>
                                             <outlet property="time" destination="7NJ-QU-ffF" id="Sq7-X4-Av0"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DaySeparatorCell" rowHeight="30" id="UUF-Ot-h6A" customClass="DaySeparatorCell" customModule="Chatlover" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="227" width="375" height="30"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UUF-Ot-h6A" id="qGO-yd-uWE">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="FoS-xc-gXw">
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="30"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sie-9i-123">
+                                                            <rect key="frame" x="0.0" y="15" width="132.5" height="0.0"/>
+                                                            <color key="backgroundColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="0.5" id="dnI-rT-aUO"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="śr. 20.02" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gIW-ze-mTJ">
+                                                            <rect key="frame" x="147.5" y="8" width="48.5" height="14.5"/>
+                                                            <fontDescription key="fontDescription" type="system" weight="thin" pointSize="12"/>
+                                                            <color key="textColor" red="0.40000000600000002" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h3k-5c-C2l">
+                                                            <rect key="frame" x="211" y="14.5" width="132" height="1"/>
+                                                            <color key="backgroundColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="0.5" id="qBs-l5-hD2"/>
+                                                            </constraints>
+                                                        </view>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="1xk-bO-GuS"/>
+                                                        <constraint firstItem="gIW-ze-mTJ" firstAttribute="leading" secondItem="Sie-9i-123" secondAttribute="trailing" constant="15" id="X4G-UY-BQO"/>
+                                                        <constraint firstItem="Sie-9i-123" firstAttribute="leading" secondItem="FoS-xc-gXw" secondAttribute="leading" id="oIo-xl-A0a"/>
+                                                        <constraint firstAttribute="trailing" secondItem="h3k-5c-C2l" secondAttribute="trailing" id="v3u-rU-4rc"/>
+                                                        <constraint firstItem="h3k-5c-C2l" firstAttribute="leading" secondItem="gIW-ze-mTJ" secondAttribute="trailing" constant="15" id="wuE-j2-19A"/>
+                                                    </constraints>
+                                                </stackView>
+                                            </subviews>
+                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstItem="FoS-xc-gXw" firstAttribute="leading" secondItem="qGO-yd-uWE" secondAttribute="leading" constant="16" id="3fh-LB-9tB"/>
+                                                <constraint firstAttribute="trailing" secondItem="FoS-xc-gXw" secondAttribute="trailing" constant="16" id="XgX-PB-dFH"/>
+                                                <constraint firstItem="FoS-xc-gXw" firstAttribute="top" secondItem="qGO-yd-uWE" secondAttribute="top" id="mWn-Gg-IOL"/>
+                                                <constraint firstAttribute="bottom" secondItem="FoS-xc-gXw" secondAttribute="bottom" id="wda-rL-lsA"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="date" destination="gIW-ze-mTJ" id="jCP-k7-CeQ"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

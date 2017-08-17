@@ -24,5 +24,10 @@ class ChatLayoutManager {
 
         static var senderBackgroundColor: UIColor = UIColor(red: 109/255, green: 255/255, blue: 125/255, alpha: 1)
         static var senderFontColor: UIColor = UIColor.black
+        static var senderProfileImageHide: Bool = true
+    }
+    
+    struct ChatTableView {
+        static var daySeparator: Bool = true
     }
 }

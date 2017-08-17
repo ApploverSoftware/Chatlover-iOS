@@ -47,6 +47,10 @@ class SenderCell: UITableViewCell, ObjectIdentifier {
         messageContainer.backgroundColor = ChatLayoutManager.Messages.senderBackgroundColor
         message.backgroundColor = ChatLayoutManager.Messages.senderBackgroundColor
         message.textColor = ChatLayoutManager.Messages.senderFontColor
+        
+        if ChatLayoutManager.Messages.senderProfileImageHide {
+            userImage.removeFromSuperview()
+        }
     }
 }
 
@@ -61,5 +65,15 @@ class ReceiverCell: UITableViewCell, ObjectIdentifier {
         messageContainer.backgroundColor = ChatLayoutManager.Messages.receiverBackgroundColor
         message.backgroundColor = ChatLayoutManager.Messages.receiverBackgroundColor
         message.textColor = ChatLayoutManager.Messages.receiverFontColor
+    }
+}
+
+class DaySeparatorCell: UITableViewCell, ObjectIdentifier {
+    @IBOutlet weak var date: UILabel!
+    
+    var messageModel: Message! {
+        didSet {
+            date.text = messageModel.separatorTimeText
+        }
     }
 }

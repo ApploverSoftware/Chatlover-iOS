@@ -25,8 +25,15 @@ class Message: NSObject {
     // Id of user
     var sender: String
     
-    // Timestmp
+    // Timestamp
     var time: Int
+    
+    // Date from timestamp
+    var date: Date {
+        get {
+            return Date(timeIntervalSince1970: Double(time / 1000))
+        }
+    }
     
     // True if message belongs to current logged user
     var receiverMessage: Bool {
@@ -35,11 +42,23 @@ class Message: NSObject {
         }
     }
     
+    // Text to show as date text in every message cell
     var timeText: String {
         get {
             let formatter = DateFormatter()
             formatter.dateFormat = "EEE HH:mm"
-            let date = Date(timeIntervalSince1970: Double(time / 1000))
+            return formatter.string(from: date)
+        }
+    }
+    
+    // True when message is separator 
+    var separatorCell: Bool = false
+    
+    // Text to show as day text in day separator cell
+    var separatorTimeText: String {
+        get {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "EEEE dd.MM"
             return formatter.string(from: date)
         }
     }
@@ -61,7 +80,7 @@ class Message: NSObject {
                         id: newMessageDict["id"] as! String,
                         sender: newMessageDict["sender"] as! String,
                         time: newMessageDict["time"] as! Int) }
-                    completionHandler(Result.success(messages))
+                    completionHandler(Result.success(messages.sorted(by: {$0.0.time < $0.1.time})))
                 }
             } else {
                 completionHandler(Result.success([]))
