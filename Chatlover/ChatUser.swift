@@ -9,19 +9,6 @@
 import UIKit
 import Firebase
 
-class APIError: Error {
-    var localizedDescription: String
-    
-    init(localizedDescription: String = "") {
-        self.localizedDescription = localizedDescription
-    }
-}
-
-enum Result<T> {
-    case success(T)
-    case failure(Error)
-}
-
 class ChatUser: NSObject {
     var fcmToken: String
     var uid: String

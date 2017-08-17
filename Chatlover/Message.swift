@@ -70,7 +70,7 @@ class Message: NSObject, MessageProtocol {
     ///   - message: Message object with content
     ///   - channelId: String with channel id to which message will be send
     ///   - completionHandler: True if success otherwise false
-    class func send(message: String, channelId: String, completionHandler: @escaping (Bool) -> Void) {
+    class func send(message: String, channelId: String, completionHandler: @escaping (Result<EmptySuccess>) -> Void) {
         Database.database().reference().child("channels").child(channelId).child("messages").observeSingleEvent(of: .value, with: { (snap) in
             let ref = snap.ref.childByAutoId()
             let key = ref.key
@@ -78,10 +78,10 @@ class Message: NSObject, MessageProtocol {
             let userUid = ChatUser.currentUser!.uid
             let values: [String: Any] = ["body" : message, "id": key, "sender": userUid, "time": timestamp]
             ref.setValue(values, withCompletionBlock: { (error, _) in
-                if error != nil {
-                    completionHandler(false)
+                if let error = error {
+                    completionHandler(Result.failure(error))
                 } else {
-                    completionHandler(true)
+                    completionHandler(Result.success(EmptySuccess()))
                 }
             })
         })

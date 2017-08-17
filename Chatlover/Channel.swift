@@ -36,7 +36,7 @@ class Channel: NSObject {
     /// - Parameters:
     ///   - withName: String with name of new channel
     ///   - completionHandler: True if success otherwise Error
-    class func createNewChannel(withName: String, completionHandler: @escaping (Result<Bool>) -> Void) {
+    class func createNewChannel(withName: String, completionHandler: @escaping (Result<EmptySuccess>) -> Void) {
         let ref = Database.database().reference().child("channels").childByAutoId()
         let key = ref.key
         let values = ["id": key, "name" : withName]
@@ -44,7 +44,7 @@ class Channel: NSObject {
             if let error = error {
                 completionHandler(Result.failure(error))
             } else {
-                completionHandler(Result.success(true))
+                completionHandler(Result.success(EmptySuccess()))
             }
         }
     }
@@ -54,27 +54,47 @@ class Channel: NSObject {
     /// - Parameters:
     ///   - channelId: String with channel id to which current user will join
     ///   - completionHandler: True if successful
-    class func joinToChannel(withId channelId: String, completionHandler: @escaping (Result<Bool>) -> Void) {
-        Database.database().reference().child("channels").child(channelId).child("users").observeSingleEvent(of: .value, with: { (snap) in
-            if snap.exists() {
-                let dictOfUsers = snap.value as! [String : Any]
-                let userUid = ChatUser.currentUser!.uid
-                if dictOfUsers[userUid] == nil {
-                    let ref = snap.ref.child(userUid)
+    class func joinToChannel(withId channelId: String, completionHandler: @escaping (Result<EmptySuccess>) -> Void) {
+        if let userUid = ChatUser.currentUser?.uid {
+            Database.database().reference().child("channels").child(channelId).child("users").observeSingleEvent(of: .value, with: { (snap) in
+                if snap.exists() {
+                    let dictOfUsers = snap.value as! [String : Any]
+                    
+                    if dictOfUsers[userUid] == nil {
+                        let ref = snap.ref.child(userUid)
+                        let values = ["uid" : userUid]
+                        ref.setValue(values)
+                        completionHandler(Result.success(EmptySuccess()))
+                    } else {
+                        completionHandler(Result.success(EmptySuccess()))
+                    }
+                } else {
+                    let userUid = ChatUser.currentUser!.uid
+                    let ref = Database.database().reference().child("channels").child(channelId).child("users").child(userUid)
                     let values = ["uid" : userUid]
                     ref.setValue(values)
-                    completionHandler(Result.success(true))
-                } else {
-                    completionHandler(Result.success(true))
+                    completionHandler(Result.success(EmptySuccess()))
                 }
-            } else {
-                let userUid = ChatUser.currentUser!.uid
-                let ref = Database.database().reference().child("channels").child(channelId).child("users").child(userUid)
-                let values = ["uid" : userUid]
-                ref.setValue(values)
-                completionHandler(Result.success(true))
-            }
-        })
+            })
+        } else {
+            let error = APIError(localizedDescription: "ChatUser is not created. Call createChatUser:completionHandler from ChatUser class before.")
+            completionHandler(Result.failure(error))
+        }
+    }
+    
+    class func leaveFromChannel(withId channelId: String, completionHandler: @escaping (Result<EmptySuccess>) -> Void) {
+        if let userUid = ChatUser.currentUser?.uid {
+            Database.database().reference().child("channels").child(channelId).child("users").child(userUid).removeValue(completionBlock: { (error, _) in
+                if let error = error {
+                    completionHandler(Result.failure(error))
+                } else {
+                    completionHandler(Result.success(EmptySuccess()))
+                }
+            })
+        } else {
+            let error = APIError(localizedDescription: "ChatUser is not created. Call createChatUser:completionHandler from ChatUser class before.")
+            completionHandler(Result.failure(error))
+        }
     }
     
     /// Function for join to particular channel by group of users
@@ -83,7 +103,7 @@ class Channel: NSObject {
     ///   - channelId: String with channel id to which users will be added
     ///   - usersId: [String] with users uid
     ///   - completionHandler: True uf successful
-    class func joinToChannel(withId channelId: String, usersId: [String], completionHandler: @escaping (Result<Bool>) -> Void) {
+    class func joinToChannel(withId channelId: String, usersId: [String], completionHandler: @escaping (Result<EmptySuccess>) -> Void) {
         Database.database().reference().child("channels").child(channelId).child("users").observeSingleEvent(of: .value, with: { (snap) in
             if snap.exists() {
                 let dictOfUsers = snap.value as! [String : Any]
@@ -94,14 +114,14 @@ class Channel: NSObject {
                         ref.setValue(values)
                     }
                 }
-                completionHandler(Result.success(true))
+                completionHandler(Result.success(EmptySuccess()))
             } else {
                 let ref = Database.database().reference().child("channels").child(channelId).child("users")
                 var usersDict: [String : Any] = [:]
                 usersId.forEach { (id) in usersDict[id] = ["uid" : usersId] }
                 let values = ["users" : usersDict]
                 ref.setValue(values)
-                completionHandler(Result.success(true))
+                completionHandler(Result.success(EmptySuccess()))
             }
         })
     }

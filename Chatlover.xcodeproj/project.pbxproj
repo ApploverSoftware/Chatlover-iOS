@@ -11,6 +11,7 @@
 		4DB6769D9C8DDB6CE9EA72AF /* Pods_ChatloverTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D12EF57E47ADF93A805682EB /* Pods_ChatloverTests.framework */; };
 		E607CC551F45E0F200FC1B7C /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = E607CC541F45E0F200FC1B7C /* Login.swift */; };
 		E607CC571F45E2C900FC1B7C /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E607CC561F45E2C900FC1B7C /* MessageModel.swift */; };
+		E607CC5A1F45EED500FC1B7C /* APIHelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E607CC591F45EED500FC1B7C /* APIHelperFunctions.swift */; };
 		E640F5751F3DA7D2006E2E65 /* ChannelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E640F5741F3DA7D2006E2E65 /* ChannelsViewController.swift */; };
 		E640F5771F3DA808006E2E65 /* ChannelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E640F5761F3DA808006E2E65 /* ChannelCell.swift */; };
 		E69797181F4033FC00B45E7C /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69797171F4033FC00B45E7C /* Message.swift */; };
@@ -60,6 +61,7 @@
 		DF5F243175480655FD2E80C7 /* Pods_Chatlover.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Chatlover.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E607CC541F45E0F200FC1B7C /* Login.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		E607CC561F45E2C900FC1B7C /* MessageModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
+		E607CC591F45EED500FC1B7C /* APIHelperFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIHelperFunctions.swift; sourceTree = "<group>"; };
 		E640F5741F3DA7D2006E2E65 /* ChannelsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelsViewController.swift; sourceTree = "<group>"; };
 		E640F5761F3DA808006E2E65 /* ChannelCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelCell.swift; sourceTree = "<group>"; };
 		E69797171F4033FC00B45E7C /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				E69797171F4033FC00B45E7C /* Message.swift */,
 				E69797191F40341400B45E7C /* Channel.swift */,
 				E697971D1F4036D600B45E7C /* ChatUser.swift */,
+				E607CC591F45EED500FC1B7C /* APIHelperFunctions.swift */,
 			);
 			name = Connection;
 			sourceTree = "<group>";
@@ -567,6 +570,7 @@
 				E6FD66CD1F3C86AB004D8813 /* ChatCells.swift in Sources */,
 				E607CC571F45E2C900FC1B7C /* MessageModel.swift in Sources */,
 				E640F5771F3DA808006E2E65 /* ChannelCell.swift in Sources */,
+				E607CC5A1F45EED500FC1B7C /* APIHelperFunctions.swift in Sources */,
 				E6FD66D71F3CAEBC004D8813 /* InputAccessoryView.swift in Sources */,
 				E6FD66D41F3CAE94004D8813 /* ChatLayoutManager.swift in Sources */,
 				E697971E1F4036D600B45E7C /* ChatUser.swift in Sources */,
