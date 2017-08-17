@@ -24,9 +24,6 @@ class ChatViewController: UIViewController {
     
     // Height of default inputBar Height
     let barHeight: CGFloat = 50
-
-    // First scroll to bottom when user opened chat
-    var scrollToBottomAtStat: Bool = false
     
     // Input view for message tapping
     override var inputAccessoryView: UIView? {
@@ -46,14 +43,30 @@ class ChatViewController: UIViewController {
             guard let weakSelf = self else { return }
             switch result {
             case .success(let newMessage):
-                let newPath = IndexPath(row: weakSelf.messages.count, section: 0)
-                weakSelf.messages.append(newMessage)
-                weakSelf.tableView.reloadData()
-                if newMessage.receiverMessage {
-                    weakSelf.tableView.insertRows(at: [newPath], with: .right)
-                } else {
-                    weakSelf.tableView.insertRows(at: [newPath], with: .left)
+                // Append only when this is new message
+                if !weakSelf.messages.contains(where: { $0.id == newMessage.id }) {
+                    weakSelf.messages.insert(newMessage, at: 0)
+                    let newPath = IndexPath(row: 0, section: 0)
+                    if newMessage.receiverMessage {
+                        weakSelf.tableView.insertRows(at: [newPath], with: .right)
+                    } else {
+                        weakSelf.tableView.insertRows(at: [newPath], with: .left)
+                    }
+                    weakSelf.tableView.scrollToRow(at: newPath, at: .top, animated: true)
                 }
+            case .failure: break
+            }
+        }
+    }
+    
+    private func getAllMessages() {
+        Message.getAllMessages(for: channel.id) { [weak self] (result) in
+            guard let weakSelf = self else { return }
+            switch result {
+            case .success(let messages):
+                weakSelf.messages = messages.sorted(by: { $0.0.time < $0.1.time }).reversed()
+                weakSelf.tableView.reloadData()
+                weakSelf.observMessages()
             case .failure: break
             }
         }
@@ -64,21 +77,16 @@ class ChatViewController: UIViewController {
             return
         }
         let height = keyboardFrame.cgRectValue.height
-        tableView.contentInset.bottom = height
-        tableView.scrollIndicatorInsets.bottom = height
+        tableView.contentInset.top = height
+        tableView.scrollIndicatorInsets.top = height
         if messages.count > 0 {
-            tableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .bottom, animated: true)
+          tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         }
     }
     
     func hideKeyboard(notification: Notification) {
-        guard let duration = notification.userInfo![UIKeyboardAnimationDurationUserInfoKey] as? Double else {
-            return
-        }
-        UIView.animate(withDuration: duration) {
-            self.tableView.contentInset.bottom = self.barHeight
-            self.tableView.scrollIndicatorInsets.bottom = self.barHeight
-        }
+        self.tableView.contentInset.top = self.barHeight
+        self.tableView.scrollIndicatorInsets.top = self.barHeight
     }
     
     /// Send message
@@ -97,14 +105,15 @@ class ChatViewController: UIViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = barHeight
         tableView.dataSource = self
-        tableView.contentInset.bottom = barHeight
-        tableView.scrollIndicatorInsets.bottom = barHeight
-        observMessages()
+        tableView.contentInset.top = barHeight
+        tableView.scrollIndicatorInsets.top = barHeight
+        tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         inputBar.invalidateIntrinsicContentSize()
+        getAllMessages()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -138,10 +147,12 @@ extension ChatViewController: UITableViewDataSource {
             let receiverCell = tableView.dequeueReusableCell(withIdentifier: ReceiverCell.objectIdentifier, for: indexPath) as! ReceiverCell
             receiverCell.message.text = message.body
             receiverCell.time.text = message.timeText
+            receiverCell.transform = CGAffineTransform(scaleX: 1, y: -1)
             return receiverCell
         } else {
             let senderCell = tableView.dequeueReusableCell(withIdentifier: SenderCell.objectIdentifier, for: indexPath) as! SenderCell
             senderCell.messageModel = message
+            senderCell.transform = CGAffineTransform(scaleX: 1, y: -1)
             return senderCell
         }
     }

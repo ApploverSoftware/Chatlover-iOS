@@ -44,6 +44,31 @@ class Message: NSObject {
         }
     }
     
+    /// Get whole message assigned to channel
+    ///
+    /// - Parameters:
+    ///   - channelId: String with channelId from which messages will be taken
+    ///   - completionHandler: [Message] array if there is any messages
+    class func getAllMessages(for channelId: String, completionHandler: @escaping (Result<[Message]>) -> Void) {
+        let ref = Database.database().reference().child("channels").child(channelId).child("messages")
+        ref.observeSingleEvent(of: .value, with: { (snap) in
+            if snap.exists() {
+                if let messagesDict = snap.value as? [String: Any] {
+                    let messages = messagesDict.map { dict -> Message in
+                        let newMessageDict = dict.value as! [String: Any]
+                        return Message(
+                        body: newMessageDict["body"] as! String,
+                        id: newMessageDict["id"] as! String,
+                        sender: newMessageDict["sender"] as! String,
+                        time: newMessageDict["time"] as! Int) }
+                    completionHandler(Result.success(messages))
+                }
+            } else {
+                completionHandler(Result.success([]))
+            }
+        })
+    }
+    
     /// Observing messages for given channel
     ///
     /// - Parameters:
