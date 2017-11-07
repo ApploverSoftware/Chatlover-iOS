@@ -8,16 +8,17 @@
 
 import UIKit
 import Firebase
+import MapKit
 
 class ChatViewController: UIViewController {
     @IBOutlet var tableView: UITableView!
     @IBOutlet var inputBar: InputAccessoryView!
     
     // Array of messages
-    var messages: [MessageModel] = []
+    var messages: [MessageViewModel] = []
     
     // Ref handler for remove observer in case user left the channel
-    var refHandler: (handler: UInt, ref: DatabaseReference)!
+    var refHandler: (handler: UInt, ref: DatabaseReference)?
     
     // Channel which will be observing
     var channel: Channel!
@@ -43,7 +44,8 @@ class ChatViewController: UIViewController {
             guard let weakSelf = self else { return }
             switch result {
             case .success(let message):
-                let newMessage = MessageModel(message: message)
+                let newMessage = MessageViewModel(message: message)
+                newMessage.messageOwner = weakSelf.channel.users.findElement({ $0.uid == message.sender })
                 // Append only when this is new message
                 guard !weakSelf.messages.contains(where: { $0.message.id == newMessage.message.id }) else {
                     return
@@ -61,11 +63,11 @@ class ChatViewController: UIViewController {
                         let newPath = IndexPath(row: 0, section: 0)
                         weakSelf.insertToTableView(newMesssages: newMessage, at: [newPath])
                     } else { // Insert day separator model before new cell model
-                        let separatorMessage = MessageModel(message: Message(body: "", id: "", sender: "", time: newMessage.message.time))
+                        let separatorMessage = MessageViewModel(message: Message(body: "", id: "", sender: "", time: newMessage.message.time, type: ""))
                         separatorMessage.separatorCell = true
-                        weakSelf.messages.insert(contentsOf: [separatorMessage, newMessage], at: 0)
-                        let separatorPath = IndexPath(row: 0, section: 0)
+                        weakSelf.messages.insert(contentsOf: [newMessage, separatorMessage], at: 0)
                         let newMessagePath = IndexPath(row: 1, section: 0)
+                        let separatorPath = IndexPath(row: 0, section: 0)
                         weakSelf.insertToTableView(newMesssages: newMessage, at: [separatorPath, newMessagePath])
                     }
                 }
@@ -75,7 +77,7 @@ class ChatViewController: UIViewController {
         }
     }
     
-    private func insertToTableView(newMesssages: MessageModel, at indexPaths: [IndexPath]) {
+    private func insertToTableView(newMesssages: MessageViewModel, at indexPaths: [IndexPath]) {
         if newMesssages.receiverMessage {
             tableView.insertRows(at: indexPaths, with: .right)
         } else {
@@ -89,7 +91,12 @@ class ChatViewController: UIViewController {
             guard let weakSelf = self else { return }
             switch result {
             case .success(let newMessages):
-                let messages = newMessages.map { MessageModel(message: $0) }
+                print(newMessages)
+                let messages = newMessages.map { m -> MessageViewModel in
+                    let messageModel = MessageViewModel(message: m)
+                    messageModel.messageOwner = self?.channel.users.findElement({ $0.uid == m.sender })
+                    return messageModel
+                }
                 // Reversed because tableView is rotated by 180 degree
                 weakSelf.messages = messages.reversed()
                 if ChatLayoutManager.ChatTableView.daySeparator {
@@ -102,12 +109,11 @@ class ChatViewController: UIViewController {
         }
     }
     
-    
-    /// Function insert separator model as message with separatorCell 
-    /// property seting to true seaprator model is for showing day 
+    /// Function insert separator model as message with separatorCell
+    /// property seting to true seaprator model is for showing day
     /// separator cell with day name + date in format: --- EEEE dd.MM ---
     private func insertSeparators() {
-        var separatedMessageArray: [MessageModel] = []
+        var separatedMessageArray: [MessageViewModel] = []
         messages.enumerated().forEach { (index, message) in
             // First index
             if index == 0 {
@@ -117,7 +123,7 @@ class ChatViewController: UIViewController {
                 if Calendar.current.isDate(previousMessage.date, inSameDayAs: message.date) {
                     separatedMessageArray.append(message)
                 } else {
-                    let separatorModel = MessageModel(message: Message(body: "", id: "", sender: "", time: previousMessage.message.time))
+                    let separatorModel = MessageViewModel(message: Message(body: "", id: "", sender: "", time: previousMessage.message.time, type: ""))
                     separatorModel.separatorCell = true
                     separatedMessageArray.append(separatorModel)
                     separatedMessageArray.append(message)
@@ -132,10 +138,13 @@ class ChatViewController: UIViewController {
             return
         }
         let height = keyboardFrame.cgRectValue.height
-        tableView.contentInset.top = height
-        tableView.scrollIndicatorInsets.top = height
-        if messages.count > 0 {
-          tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        if height > 100 {
+            tableView.contentInset.top = height
+            tableView.scrollIndicatorInsets.top = height
+            print(tableView.contentOffset)
+            if messages.count > 0 && (tableView.contentOffset.y + self.barHeight) < height {
+                tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            }
         }
     }
     
@@ -144,22 +153,43 @@ class ChatViewController: UIViewController {
         self.tableView.scrollIndicatorInsets.top = self.barHeight
     }
     
-    /// Send message
+    /// Send message as text
     ///
-    /// Send message by write it to particular channel
     @IBAction func sendMessage(_ sender: UIButton) {
         if let message = inputBar.message {
-            Message.send(message: message, channelId: channel.id, completionHandler: { _ in })
+            Message.sendTextMessage(message: message, channelId: channel.id, completionHandler: {_ in})
+        }
+    }
+    
+    
+    /// Send message as location
+    ///
+    @IBAction func sendLocation(_ sender: Any) {
+        LocationManager.instance.updateLocation { (location) in
+            let lat = "\(location.coordinate.latitude)"
+            let long = "\(location.coordinate.longitude)"
+            let locationString = lat + "/" + long
+            Message.sendLocationMessage(location: locationString, channelId: self.channel.id, completionHandler: {_ in})
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = channel.name
+        
+        let bundle = Bundle(for: ChatViewController.self)
+        let senderCellXib = UINib(nibName: SenderCell.objectIdentifier, bundle: bundle)
+        let receiverCellXib = UINib(nibName: ReceiverCell.objectIdentifier, bundle: bundle)
+        let separatorCellXib = UINib(nibName: DaySeparatorCell.objectIdentifier, bundle: bundle)
+        tableView.register(senderCellXib, forCellReuseIdentifier: SenderCell.objectIdentifier)
+        tableView.register(receiverCellXib, forCellReuseIdentifier: ReceiverCell.objectIdentifier)
+        tableView.register(separatorCellXib, forCellReuseIdentifier: DaySeparatorCell.objectIdentifier)
+
         tableView.backgroundColor = .clear
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = barHeight
         tableView.dataSource = self
+        tableView.delegate = self
         tableView.contentInset.top = barHeight
         tableView.scrollIndicatorInsets.top = barHeight
         tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
@@ -181,7 +211,9 @@ class ChatViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
-        refHandler.ref.removeObserver(withHandle: refHandler.handler)
+        if let refHandler = refHandler {
+            refHandler.ref.removeObserver(withHandle: refHandler.handler)
+        }
     }
     
     deinit {
@@ -217,5 +249,26 @@ extension ChatViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension ChatViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        inputBar.textView.resignFirstResponder()
+        let message = messages[indexPath.row]
+        if message.type == .loc {
+            openMapForPlace(message: message)
+        }
+    }
     
+    private func openMapForPlace(message: MessageViewModel) {
+        let location = message.location
+        let regionDistance: CLLocationDistance = 10000
+        let regionSpan = MKCoordinateRegionMakeWithDistance(location, regionDistance, regionDistance)
+        let options = [
+            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
+        ]
+        let placemark = MKPlacemark(coordinate: location)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = message.receiverMessage ? "Moja lokalizacja" : "Lokalizacja \(message.messageOwner!.name)"
+        mapItem.openInMaps(launchOptions: options)
+    }
 }
+

@@ -22,7 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Register Push notifications
         registerForPushNotifications(application: application)
-        
         return true
     }
     
@@ -42,7 +41,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
         Auth.auth().setAPNSToken(deviceToken, type: AuthAPNSTokenType.sandbox)
         Messaging.messaging().apnsToken = deviceToken
-        Messaging.messaging().setAPNSToken(deviceToken, type: .sandbox)
         print("Device Token:", deviceTokenString)
     }
     

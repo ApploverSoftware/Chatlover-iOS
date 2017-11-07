@@ -10,11 +10,20 @@ import UIKit
 import Firebase
 
 /// Represents single message in chat
-class Message: NSObject, MessageProtocol {
-    let body: String
-    let id: String
-    let sender: String
-    let time: Int
+class Message: NSObject, MessageProtocol, ChatObjectProtocol {
+    var type: MessageType
+    var body: String
+    var id: String
+    var sender: String
+    var time: String
+    
+    enum MessageType: String {
+        case txt
+        case img
+        case vid
+        case mic
+        case loc
+    }
     
     /// Get whole message assigned to channel
     ///
@@ -25,15 +34,12 @@ class Message: NSObject, MessageProtocol {
         let ref = Database.database().reference().child("channels").child(channelId).child("messages")
         ref.observeSingleEvent(of: .value, with: { (snap) in
             if snap.exists() {
-                if let messagesDict = snap.value as? [String: Any] {
-                    let messages = messagesDict.map { dict -> Message in
-                        let newMessageDict = dict.value as! [String: Any]
-                        return Message(
-                        body: newMessageDict["body"] as! String,
-                        id: newMessageDict["id"] as! String,
-                        sender: newMessageDict["sender"] as! String,
-                        time: newMessageDict["time"] as! Int) }
+                if let messagesDict = snap.value as? [String : Any] {
+                    debugPrint(messagesDict)
+                    let messages = messagesDict.flatMap { Message(dictionary: $0.value as! [String : Any]) }
                     completionHandler(Result.success(messages.sorted(by: {$0.0.time < $0.1.time})))
+                } else {
+                    completionHandler(Result.success([]))
                 }
             } else {
                 completionHandler(Result.success([]))
@@ -51,53 +57,73 @@ class Message: NSObject, MessageProtocol {
         let ref = Database.database().reference().child("channels").child(channelId).child("messages")
         let handler = ref.observe(.childAdded, with: { (snap) in
             if snap.exists() {
-                if let messageDict = snap.value as? [String : Any] {
-                    let message = Message(
-                        body: messageDict["body"] as! String,
-                        id: messageDict["id"] as! String,
-                        sender: messageDict["sender"] as! String,
-                        time: messageDict["time"] as! Int)
+                if let messageDict = snap.value as? [String : Any], let message = Message(dictionary: messageDict) {
                     completionHandler(Result.success(message))
+                } else {
+                    let apiError = APIError(localizedDescription: "Can't parse Message object")
+                    completionHandler(Result.failure(apiError))
                 }
             }
         })
         return (handler: handler, ref: ref)
     }
     
-    /// Send message to particular channelId
+    /// Send text message
     ///
     /// - Parameters:
-    ///   - message: Message object with content
-    ///   - channelId: String with channel id to which message will be send
-    ///   - completionHandler: True if success otherwise false
-    class func send(message: String, channelId: String, completionHandler: @escaping (Result<EmptySuccess>) -> Void) {
-        Database.database().reference().child("channels").child(channelId).child("messages").observeSingleEvent(of: .value, with: { (snap) in
-            let ref = snap.ref.childByAutoId()
+    ///   - message: Content of body
+    ///   - channelId: Channel to which message will be saved
+    ///   - completionHandler: If saved successfuly then EmptySuccess
+    class func sendTextMessage(message: String, channelId: String, completionHandler: @escaping (Result<EmptySuccess>) -> Void) {
+        uploadMessage(body: message, type: .txt, channelId: channelId, completionHandler: completionHandler)
+    }
+    
+    /// Send location message
+    ///
+    /// - Parameters:
+    ///   - location: Location in format lat/lng
+    ///   - channelId: Channel to which message will be saved
+    ///   - completionHandler: If saved successfuly then EmptySuccess
+    class func sendLocationMessage(location: String, channelId: String, completionHandler: @escaping (Result<EmptySuccess>) -> Void) {
+        uploadMessage(body: location, type: .loc, channelId: channelId, completionHandler: completionHandler)
+    }
+    
+    /// Upload message to firebase
+    ///
+    /// - Parameters:
+    ///   - values: Dictionary which will be uploaded
+    ///   - channelId: Channel id to which message will be saved
+    ///   - completionHandler: EmptySuccess will be returned when upload succeeded otherwise Error
+    private class func uploadMessage(body: String, type: MessageType, channelId: String, completionHandler: @escaping (Result<EmptySuccess>) -> Void) {
+        if let chatUserId = ChatUser.currentUser?.uid {
+            let timestamp = "\(Int(Date().timeIntervalSince1970 * 1000))"
+            let ref = Database.database().reference().child("channels").child(channelId).child("messages").childByAutoId()
             let key = ref.key
-            let timestamp = Int(Date().timeIntervalSince1970 * 1000)
-            let userUid = ChatUser.currentUser!.uid
-            let values: [String: Any] = ["body" : message, "id": key, "sender": userUid, "time": timestamp]
-            ref.setValue(values, withCompletionBlock: { (error, _) in
+            let values = ["id" : key, "body" : body, "type" : type.rawValue, "sender" : chatUserId, "time" : timestamp]
+            ref.setValue(values) { (error, _) in
                 if let error = error {
                     completionHandler(Result.failure(error))
                 } else {
                     completionHandler(Result.success(EmptySuccess()))
                 }
-            })
-        })
+            }
+        }
     }
     
     /// Initializer
     ///
     /// - Parameters:
-    ///   - body: String with text of message
-    ///   - id: Strign with id of message
-    ///   - sender: String with id of user which send this message
-    ///   - time: Int with timestamp
-    required init(body: String, id: String, sender: String, time: Int) {
+    ///   - body: Information about message, format depends of type
+    ///   - id: Id of message
+    ///   - sender: Id of user which send this message
+    ///   - time: Timestamp of message
+    ///   - type: Type of message
+    required init(body: String, id: String, sender: String, time: String, type: String) {
         self.body = body
         self.id = id
         self.sender = sender
         self.time = time
+        self.type = MessageType(rawValue: type) ?? .txt
     }
 }
+

@@ -8,11 +8,11 @@
 
 import UIKit
 
-protocol ObjectIdentifier: class {
+protocol CellIdentifier: class {
     static var objectIdentifier: String { get }
 }
 
-extension ObjectIdentifier {
+extension CellIdentifier {
     static var objectIdentifier: String {
         get {
             return "\(Self.self)"
@@ -20,35 +20,85 @@ extension ObjectIdentifier {
     }
 }
 
-class SenderCell: UITableViewCell, ObjectIdentifier {
+class SenderCell: UITableViewCell, CellIdentifier {
+    
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var userImage: UIImageView!
-    @IBOutlet weak var message: UITextView!
+    
+    // Main container
     @IBOutlet weak var messageContainer: UIView!
-
-    var messageModel: MessageModel! {
+    @IBOutlet weak var message: UITextView!
+    
+    // For location content
+    @IBOutlet weak var locationTitle: UILabel!
+    @IBOutlet weak var locationImageView: UIImageView!
+    @IBOutlet weak var locationDescription: UILabel!
+    
+    var messageModel: MessageViewModel! {
         didSet {
+            if !ChatLayoutManager.Messages.senderProfileImageHide {
+                messageModel.messageOwner?.getProfilePic(completionHandler: { (image) in
+                    self.userImage.image = image
+                })
+            }
             time.text = messageModel.timeText
-            message.text = messageModel.messageText
-            ChatUser.getChatUser(withId: messageModel.ownerId) { (result) in
-                switch result {
-                case .success(let user):
-                    self.name.text = user.name
-                case .failure: break
-                }
+            name.text = messageModel.messageOwner?.name.uppercased()
+            
+            switch messageModel.type {
+            case .txt:
+                assignAndShowTextContent()
+            case .loc:
+                assignAndShowLocationContent()
+            default: break
             }
         }
+    }
+    
+    private func assignAndShowLocationContent() {
+        message.text = ""
+        locationTitle.text = NSLocalizedString("_chatLocationSenderHeader", comment: "")
+        locationImageView.image = UIImage(named: "localization")
+        locationDescription.text = NSLocalizedString("_chatLocationDownload", comment: "")
+        GoogleAPIProvider.getAddress(from: messageModel.location) { (result) in
+            switch result {
+            case .success(let address):
+                self.locationDescription.text = address
+            case .failure:
+                self.locationDescription.text = NSLocalizedString("_chatLocationError", comment: "")
+            }
+        }
+    }
+    
+    private func assignAndShowTextContent() {
+        message.text = messageModel.messageText
+        locationImageView.image = nil
+        locationTitle.text = ""
+        locationDescription.text = ""
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         transform = CGAffineTransform(scaleX: 1, y: -1)
         
+        time.textColor = ChatLayoutManager.Messages.messageNameTimeColor
+        time.font = ChatLayoutManager.Messages.messageTimeFont
+        
+        name.textColor = ChatLayoutManager.Messages.messageNameTimeColor
+        name.font = ChatLayoutManager.Messages.receiverNameFont
+        
+        locationTitle.textColor = ChatLayoutManager.Messages.receiverFontColor
+        locationTitle.font = ChatLayoutManager.Messages.messageLocationHeaderFont
+        
+        locationDescription.textColor = ChatLayoutManager.Messages.receiverFontColor
+        locationDescription.font = ChatLayoutManager.Messages.messageTextFont
+        
         messageContainer.layer.cornerRadius = ChatLayoutManager.Messages.messageCornerRadius
         messageContainer.backgroundColor = ChatLayoutManager.Messages.senderBackgroundColor
+        
         message.backgroundColor = ChatLayoutManager.Messages.senderBackgroundColor
         message.textColor = ChatLayoutManager.Messages.senderFontColor
+        message.font = ChatLayoutManager.Messages.messageTextFont
         
         if ChatLayoutManager.Messages.senderProfileImageHide {
             userImage.removeFromSuperview()
@@ -56,33 +106,79 @@ class SenderCell: UITableViewCell, ObjectIdentifier {
     }
 }
 
-class ReceiverCell: UITableViewCell, ObjectIdentifier {
+class ReceiverCell: UITableViewCell, CellIdentifier {
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var message: UITextView!
     @IBOutlet weak var messageContainer: UIView!
     
-    var messageModel: MessageModel! {
+    // For location content
+    @IBOutlet weak var locationImageView: UIImageView!
+    @IBOutlet weak var locationHeader: UILabel!
+    @IBOutlet weak var locationDescription: UILabel!
+    
+    var messageModel: MessageViewModel! {
         didSet {
             time.text = messageModel.timeText
-            message.text = messageModel.messageText
+            switch messageModel.type {
+            case .txt:
+                assignAndShowTextContent()
+            case .loc:
+                assignAndShowLocationContent()
+            default: break
+            }
         }
+    }
+    
+    private func assignAndShowLocationContent() {
+        message.text = ""
+        locationImageView.image = UIImage(named: "localization")
+        locationHeader.text = NSLocalizedString("_chatLocationReceiverHeader", comment: "")
+        locationDescription.text = NSLocalizedString("_chatLocationDownload", comment: "")
+        GoogleAPIProvider.getAddress(from: messageModel.location) { (result) in
+            switch result {
+            case .success(let address):
+                self.locationDescription.text = address
+            case .failure:
+                self.locationDescription.text = NSLocalizedString("_chatLocationError", comment: "")
+            }
+        }
+    }
+    
+    private func assignAndShowTextContent() {
+        message.text = messageModel.messageText
+        locationImageView.image = nil
+        locationHeader.text = ""
+        locationDescription.text = ""
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         transform = CGAffineTransform(scaleX: 1, y: -1)
         
+        time.textColor = ChatLayoutManager.Messages.messageNameTimeColor
+        time.font = ChatLayoutManager.Messages.messageTimeFont
+        
+        locationHeader.textColor = ChatLayoutManager.Messages.receiverFontColor
+        locationHeader.font = ChatLayoutManager.Messages.messageLocationHeaderFont
+        
+        locationDescription.textColor = ChatLayoutManager.Messages.receiverFontColor
+        locationDescription.font = ChatLayoutManager.Messages.messageTextFont
+        
         messageContainer.layer.cornerRadius = ChatLayoutManager.Messages.messageCornerRadius
         messageContainer.backgroundColor = ChatLayoutManager.Messages.receiverBackgroundColor
+        
         message.backgroundColor = ChatLayoutManager.Messages.receiverBackgroundColor
         message.textColor = ChatLayoutManager.Messages.receiverFontColor
+        message.font = ChatLayoutManager.Messages.messageTextFont
     }
 }
 
-class DaySeparatorCell: UITableViewCell, ObjectIdentifier {
+class DaySeparatorCell: UITableViewCell, CellIdentifier {
+    @IBOutlet weak var leftLine: UIView!
     @IBOutlet weak var date: UILabel!
+    @IBOutlet weak var rightLine: UIView!
     
-    var messageModel: MessageModel! {
+    var messageModel: MessageViewModel! {
         didSet {
             date.text = messageModel.separatorTimeText
         }
@@ -90,6 +186,13 @@ class DaySeparatorCell: UITableViewCell, ObjectIdentifier {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        date.font = ChatLayoutManager.Messages.messageSeparatorFont
+        date.textColor = ChatLayoutManager.Messages.messageSeparatorTextColor
+        
+        leftLine.backgroundColor = ChatLayoutManager.Messages.messageSeparatorTextColor
+        rightLine.backgroundColor = ChatLayoutManager.Messages.messageSeparatorTextColor
+        
         transform = CGAffineTransform(scaleX: 1, y: -1)
     }
 }
+
