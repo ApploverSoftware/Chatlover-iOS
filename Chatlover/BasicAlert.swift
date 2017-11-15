@@ -18,7 +18,7 @@ class BasicAlert {
         }
         
         let alertController = UIAlertController(title: "", message: messageText, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("_basicAlertOkButton", comment: ""), style: .default, handler: { _ in
+        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in
             completionHandler?()
         }))
         show(alertController)

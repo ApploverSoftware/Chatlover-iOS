@@ -7,34 +7,34 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>666991487842-jk1sphmjid39jgrasbmrqhndhmgtsdcm.apps.googleusercontent.com</string>
+	<string>236797899580-v9f46mbc4b9cb6n7e92gcigkm0mnlgap.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.666991487842-jk1sphmjid39jgrasbmrqhndhmgtsdcm</string>
+	<string>com.googleusercontent.apps.236797899580-v9f46mbc4b9cb6n7e92gcigkm0mnlgap</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDyg6LLAlC5M2YAH_-3Mfg2HNtQVjHsOBc</string>
+	<string>AIzaSyBcA1Lp7lyhE4JIT4kbK6UaRSBrYpSXu5M</string>
 	<key>GCM_SENDER_ID</key>
-	<string>666991487842</string>
+	<string>236797899580</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>pl.applover.chatlover</string>
 	<key>PROJECT_ID</key>
-	<string>chatlover-2d1c6</string>
+	<string>chatlovertest</string>
 	<key>STORAGE_BUCKET</key>
-	<string>chatlover-2d1c6.appspot.com</string>
+	<string>chatlovertest.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:666991487842:ios:ffc8a9cbea5ebe96</string>
+	<string>1:236797899580:ios:ffc8a9cbea5ebe96</string>
 	<key>DATABASE_URL</key>
-	<string>https://chatlover-2d1c6.firebaseio.com</string>
+	<string>https://chatlovertest.firebaseio.com</string>
 </dict>
 </plist>

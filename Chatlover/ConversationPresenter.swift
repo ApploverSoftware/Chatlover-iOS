@@ -27,15 +27,20 @@ class ConversationPresenter: NSObject {
     }
     
     func fetchConversations() {
-        ChatUser.currentUser!.fetchChannels(completionHandler: { (result) in
-            switch result {
-            case .success(let conversations):
-                self.conversations = conversations
-                self.view?.needReloadTableView()
-            case .failure(let error):
-                BasicAlert.showInfoAlert(with: error)
-            }
-        })
+        if ChatUser.currentUser != nil {
+            ChatUser.currentUser!.fetchChannels(completionHandler: { (result) in
+                switch result {
+                case .success(let conversations):
+                    self.conversations = conversations
+                    self.view?.needReloadTableView()
+                case .failure(let error):
+                    BasicAlert.showInfoAlert(with: error)
+                }
+            })
+        } else {
+            let error = APIError(localizedDescription: "You need to fetch ChatUser")
+            BasicAlert.showInfoAlert(with: error)
+        }
     }
 }
 

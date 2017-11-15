@@ -9,9 +9,6 @@
 import UIKit
 import Firebase
 
-let defaultMaleImage = "profileMan"
-let defaultFemaleImage = "profileWoman"
-
 class ChatUser: NSObject, ChatObjectProtocol {
     var uid: String
     var name: String
@@ -19,49 +16,6 @@ class ChatUser: NSObject, ChatObjectProtocol {
     var avatar: String?
     
     static var currentUser: ChatUser?
-    
-    /// Function that Create chat user
-    ///
-    /// - Parameters:
-    ///   - uid: UNIQUE id for chat user object (prefered id of Your user/primary model)
-    ///   - name: Name of chat user
-    ///   - fcmToken: Optional Firebase cloud message token, required when push notifications are on
-    ///   - avatar: Optional UIImage with avatar of chat user
-    ///   - completionHandler: Return ChatUser if success, otherwise Error
-    class func create(uid: String, name: String, fcmToken: String?, avatar: UIImage?, completionHandler: @escaping (Result<ChatUser>) -> Void) {
-        if let avatar = avatar, let data = UIImageJPEGRepresentation(avatar, 0.5) {
-            let fileName = "\(Date().timeIntervalSince1970 * 1000).jpg"
-            let path = uid + "/" + fileName
-            Storage.storage().reference().child("chatlover").child("chat_user").child(path).putData(data, metadata: nil, completion: { (metadata, error) in
-                guard let metadata = metadata else {
-                    let apiError = APIError(localizedDescription: "Can't save image in path: \(path)")
-                    completionHandler(Result.failure(apiError))
-                    return
-                }
-                let downloadURL = metadata.downloadURL()
-                let chatUser = ChatUser(uid: uid, name: name, fcmToken: fcmToken, avatar: downloadURL?.absoluteString)
-                save(model: chatUser, completionHandler: completionHandler)
-            })
-        } else {
-            let chatUser = ChatUser(uid: uid, name: name, fcmToken: fcmToken, avatar: nil)
-            save(model: chatUser, completionHandler: completionHandler)
-        }
-    }
-    
-    /// Save created ChatUser model into firebase
-    ///
-    /// - Parameters:
-    ///   - model: ChatUser model which you want to save
-    ///   - completionHandler: Return given `model` if success otherwsie Error
-    private class func save(model: ChatUser, completionHandler: @escaping (Result<ChatUser>) -> Void) {
-        Database.database().reference().child("chat_users").child(model.uid).setValue(model.toDictionary(), withCompletionBlock: { (error, ref) in
-            if let error = error {
-                completionHandler(Result.failure(error))
-            } else {
-                completionHandler(Result.success(model))
-            }
-        })
-    }
     
     /// Get chat user object
     ///
@@ -131,7 +85,7 @@ class ChatUser: NSObject, ChatObjectProtocol {
         if let profilePic = avatar {
             Storage.storage().reference().child(uid).child("photo/\(profilePic).jpg").getData(maxSize: 1 * 1024 * 1024, completion: { (data, error) in
                 if let _ = error {
-                    let defaultImage = UIImage(named: defaultMaleImage)!
+                    let defaultImage = ChatLayoutManager.Messages.defaultImage
                     DispatchQueue.main.async {
                         completionHandler(defaultImage)
                     }
@@ -144,7 +98,7 @@ class ChatUser: NSObject, ChatObjectProtocol {
                 }
             })
         } else {
-            let defaultImage = UIImage(named: defaultMaleImage)!
+            let defaultImage = ChatLayoutManager.Messages.defaultImage
             completionHandler(defaultImage)
         }
     }

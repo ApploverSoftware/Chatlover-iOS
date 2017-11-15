@@ -28,14 +28,9 @@ class ConversationCell: UITableViewCell, CellIdentifier {
                 case .txt:
                     self.lastMessage.text = messageModel.messageText
                 case .loc:
-                    GoogleAPIProvider.getAddress(from: messageModel.location) { result in
-                        switch result {
-                        case .success(let locationText):
-                            self.lastMessage.text = locationText
-                        case .failure(let error):
-                            self.lastMessage.text = error.localizedDescription
-                        }
-                    }
+                    LocationManager.getAddress(location: messageModel.location, completionHandler: { (address) in
+                        self.lastMessage.text = address
+                    })
                 default: break
                 }
             }
@@ -69,8 +64,8 @@ class ConversationCell: UITableViewCell, CellIdentifier {
     }
     
     private func clearContent() {
-        avatar.image = UIImage(named: "google")
-        name.text = NSLocalizedString("_cellDownloadingText", comment: "")
+        avatar.image = ChatLayoutManager.Messages.defaultImage
+        name.text = ChatLayoutManager.Conversations.downloadCellContentText
         lastMessage.text = ""
         time.text = ""
     }

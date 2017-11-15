@@ -32,7 +32,6 @@ class InputAccessoryView: UIView, UITextViewDelegate {
     override var intrinsicContentSize: CGSize {
         // Calculate intrinsicContentSize that will fit all the text
         let textSize = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: CGFloat.greatestFiniteMagnitude))
-        print(textSize, "TEXT SIZE")
         // Turn on scrolling if max reached
         if textSize.height >= maxHeight.constant {
             textView.isScrollEnabled = true

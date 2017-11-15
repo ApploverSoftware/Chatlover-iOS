@@ -14,9 +14,9 @@ protocol MessageProtocol: class {
     var body: String { get }
     var id: String { get }
     var sender: String { get }
-    var time: String { get }
+    var time: Double { get }
     
-    init(body: String, id: String, sender: String, time: String, type: String)
+    init(body: String, id: String, sender: String, time: Double, type: String)
 }
 
 class MessageViewModel {
@@ -25,7 +25,7 @@ class MessageViewModel {
     // Date from timestamp
     var date: Date {
         get {
-            return Date(timeIntervalSince1970: Double(Double(message.time)! / 1000))
+            return Date(timeIntervalSince1970: Double(message.time / 1000))
         }
     }
     

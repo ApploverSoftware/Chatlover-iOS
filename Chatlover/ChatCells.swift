@@ -57,16 +57,11 @@ class SenderCell: UITableViewCell, CellIdentifier {
     
     private func assignAndShowLocationContent() {
         message.text = ""
-        locationTitle.text = NSLocalizedString("_chatLocationSenderHeader", comment: "")
-        locationImageView.image = UIImage(named: "localization")
-        locationDescription.text = NSLocalizedString("_chatLocationDownload", comment: "")
-        GoogleAPIProvider.getAddress(from: messageModel.location) { (result) in
-            switch result {
-            case .success(let address):
-                self.locationDescription.text = address
-            case .failure:
-                self.locationDescription.text = NSLocalizedString("_chatLocationError", comment: "")
-            }
+        locationTitle.text = ChatLayoutManager.Messages.senderLocationHeader
+        locationImageView.image = ChatLayoutManager.Messages.locationMessageImage
+        locationDescription.text = ChatLayoutManager.Messages.locationMessageDownloadText
+        LocationManager.getAddress(location: messageModel.location) { (result) in
+            self.locationDescription.text = result
         }
     }
     
@@ -131,16 +126,11 @@ class ReceiverCell: UITableViewCell, CellIdentifier {
     
     private func assignAndShowLocationContent() {
         message.text = ""
-        locationImageView.image = UIImage(named: "localization")
-        locationHeader.text = NSLocalizedString("_chatLocationReceiverHeader", comment: "")
-        locationDescription.text = NSLocalizedString("_chatLocationDownload", comment: "")
-        GoogleAPIProvider.getAddress(from: messageModel.location) { (result) in
-            switch result {
-            case .success(let address):
-                self.locationDescription.text = address
-            case .failure:
-                self.locationDescription.text = NSLocalizedString("_chatLocationError", comment: "")
-            }
+        locationImageView.image = ChatLayoutManager.Messages.locationMessageImage
+        locationHeader.text = ChatLayoutManager.Messages.receiverLocationHeader
+        locationDescription.text = ChatLayoutManager.Messages.locationMessageDownloadText
+        LocationManager.getAddress(location: messageModel.location) { (result) in
+            self.locationDescription.text = result
         }
     }
     

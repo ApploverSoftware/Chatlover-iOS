@@ -164,13 +164,36 @@ class ChatViewController: UIViewController {
     
     /// Send message as location
     ///
-    @IBAction func sendLocation(_ sender: Any) {
+    @IBAction func sendLocation(_ sender: UIButton) {
+        startAnimateLocationButton(button: sender)
         LocationManager.instance.updateLocation { (location) in
+            self.stopAnimateLocationButton(button: sender)
             let lat = "\(location.coordinate.latitude)"
             let long = "\(location.coordinate.longitude)"
             let locationString = lat + "/" + long
             Message.sendLocationMessage(location: locationString, channelId: self.channel.id, completionHandler: {_ in})
         }
+    }
+    
+    /// Start animating send location button
+    ///
+    /// - Parameter sender: UIButton object
+    private func startAnimateLocationButton(button: UIButton) {
+        button.isUserInteractionEnabled = false
+        UIView.animate(withDuration: 0.2, delay: 0, options: [.repeat], animations: {
+            button.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        }, completion: nil)
+        UIView.animate(withDuration: 0.2, delay: 0.2, options: [.repeat], animations: {
+            button.transform = CGAffineTransform.identity
+        }, completion: nil)
+    }
+    
+    /// Stop animating send location button
+    ///
+    /// - Parameter button: UIButton object
+    private func stopAnimateLocationButton(button: UIButton) {
+        button.isUserInteractionEnabled = true
+        button.layer.removeAllAnimations()
     }
     
     override func viewDidLoad() {
@@ -267,7 +290,7 @@ extension ChatViewController: UITableViewDelegate {
         ]
         let placemark = MKPlacemark(coordinate: location)
         let mapItem = MKMapItem(placemark: placemark)
-        mapItem.name = message.receiverMessage ? "Moja lokalizacja" : "Lokalizacja \(message.messageOwner!.name)"
+        mapItem.name = message.receiverMessage ? ChatLayoutManager.Other.externalMapMyPinTitle : "\(ChatLayoutManager.Other.externalMapUserPinTtitle) \(message.messageOwner!.name)"
         mapItem.openInMaps(launchOptions: options)
     }
 }

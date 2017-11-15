@@ -18,7 +18,7 @@ class ConversationsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
-        navigationItem.title = NSLocalizedString("_conversationsListTitle", comment: "")
+        navigationItem.title = ChatLayoutManager.Conversations.title
         super.viewDidLoad()
         let cellXib = UINib(nibName: ConversationCell.objectIdentifier, bundle: Bundle.main)
         tableView.register(cellXib, forCellReuseIdentifier: ConversationCell.objectIdentifier)
@@ -37,7 +37,7 @@ extension ConversationsViewController: ConversationViewProtocol {
     }
     
     func showChat(channel conversation: Channel) {
-        let chatVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
+        let chatVC = UIStoryboard(name: nameOfStoryboardWithConversationAndChatController, bundle: nil).instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
         chatVC.channel = conversation
         navigationController?.pushViewController(chatVC, animated: true)
     }

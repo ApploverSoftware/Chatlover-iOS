@@ -54,7 +54,7 @@ extension ChatObjectProtocol where Self: Message {
     }
     
     init?(dictionary: [String : Any]) {
-        guard let body = dictionary["body"] as? String, let id = dictionary["id"] as? String, let sender = dictionary["sender"] as? String, let time = dictionary["time"] as? String, let type = dictionary["type"] as? String else {
+        guard let body = dictionary["body"] as? String, let id = dictionary["id"] as? String, let sender = dictionary["sender"] as? String, let time = dictionary["time"] as? Double, let type = dictionary["type"] as? String else {
             return nil
         }
         self.init(body: body, id: id, sender: sender, time: time, type: type)

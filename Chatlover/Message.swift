@@ -15,7 +15,7 @@ class Message: NSObject, MessageProtocol, ChatObjectProtocol {
     var body: String
     var id: String
     var sender: String
-    var time: String
+    var time: Double
     
     enum MessageType: String {
         case txt
@@ -96,10 +96,10 @@ class Message: NSObject, MessageProtocol, ChatObjectProtocol {
     ///   - completionHandler: EmptySuccess will be returned when upload succeeded otherwise Error
     private class func uploadMessage(body: String, type: MessageType, channelId: String, completionHandler: @escaping (Result<EmptySuccess>) -> Void) {
         if let chatUserId = ChatUser.currentUser?.uid {
-            let timestamp = "\(Int(Date().timeIntervalSince1970 * 1000))"
+            let timestamp = Double((Date().timeIntervalSince1970 * 1000))
             let ref = Database.database().reference().child("channels").child(channelId).child("messages").childByAutoId()
             let key = ref.key
-            let values = ["id" : key, "body" : body, "type" : type.rawValue, "sender" : chatUserId, "time" : timestamp]
+            let values: [String : Any] = ["id" : key, "body" : body, "type" : type.rawValue, "sender" : chatUserId, "time" : timestamp]
             ref.setValue(values) { (error, _) in
                 if let error = error {
                     completionHandler(Result.failure(error))
@@ -118,7 +118,7 @@ class Message: NSObject, MessageProtocol, ChatObjectProtocol {
     ///   - sender: Id of user which send this message
     ///   - time: Timestamp of message
     ///   - type: Type of message
-    required init(body: String, id: String, sender: String, time: String, type: String) {
+    required init(body: String, id: String, sender: String, time: Double, type: String) {
         self.body = body
         self.id = id
         self.sender = sender
