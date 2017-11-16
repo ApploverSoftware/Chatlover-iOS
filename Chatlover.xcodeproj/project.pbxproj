@@ -14,7 +14,6 @@
 		04178A3F1FB1CE3000B3C81A /* DaySeparatorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04178A3C1FB1CE3000B3C81A /* DaySeparatorCell.xib */; };
 		04178A411FB1CFBA00B3C81A /* ConversationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04178A401FB1CFBA00B3C81A /* ConversationCell.xib */; };
 		04178A431FB1D15800B3C81A /* ConversationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04178A421FB1D15800B3C81A /* ConversationPresenter.swift */; };
-		042B5E401FBC30FC00E559D9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 042B5E3F1FBC30FC00E559D9 /* GoogleService-Info.plist */; };
 		042B5E421FBC34A100E559D9 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042B5E411FBC34A100E559D9 /* LocationManager.swift */; };
 		042B5E461FBC47D100E559D9 /* RegisterNewAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042B5E451FBC47D100E559D9 /* RegisterNewAccount.swift */; };
 		042B5E481FBC47E500E559D9 /* DemoStoryboard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 042B5E471FBC47E500E559D9 /* DemoStoryboard.xib */; };
@@ -68,9 +67,7 @@
 		04178A3C1FB1CE3000B3C81A /* DaySeparatorCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DaySeparatorCell.xib; sourceTree = "<group>"; };
 		04178A401FB1CFBA00B3C81A /* ConversationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConversationCell.xib; sourceTree = "<group>"; };
 		04178A421FB1D15800B3C81A /* ConversationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationPresenter.swift; sourceTree = "<group>"; };
-		042B5E3F1FBC30FC00E559D9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		042B5E411FBC34A100E559D9 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
-		042B5E441FBC45F500E559D9 /* Chatlover.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Chatlover.entitlements; sourceTree = "<group>"; };
 		042B5E451FBC47D100E559D9 /* RegisterNewAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterNewAccount.swift; sourceTree = "<group>"; };
 		042B5E471FBC47E500E559D9 /* DemoStoryboard.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DemoStoryboard.xib; sourceTree = "<group>"; };
 		04E1D5F71FB1D5FC003AF359 /* RoundedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
@@ -265,9 +262,7 @@
 		E6FD66C51F3C808F004D8813 /* DemoFiles */ = {
 			isa = PBXGroup;
 			children = (
-				042B5E441FBC45F500E559D9 /* Chatlover.entitlements */,
 				E6FD66A01F3C7DB4004D8813 /* Info.plist */,
-				042B5E3F1FBC30FC00E559D9 /* GoogleService-Info.plist */,
 				042B5E451FBC47D100E559D9 /* RegisterNewAccount.swift */,
 				042B5E471FBC47E500E559D9 /* DemoStoryboard.xib */,
 			);
@@ -376,7 +371,7 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -421,7 +416,6 @@
 			files = (
 				04178A411FB1CFBA00B3C81A /* ConversationCell.xib in Resources */,
 				E6FD669F1F3C7DB4004D8813 /* LaunchScreen.storyboard in Resources */,
-				042B5E401FBC30FC00E559D9 /* GoogleService-Info.plist in Resources */,
 				04178A3F1FB1CE3000B3C81A /* DaySeparatorCell.xib in Resources */,
 				04178A3E1FB1CE3000B3C81A /* ReceiverCell.xib in Resources */,
 				042B5E481FBC47E500E559D9 /* DemoStoryboard.xib in Resources */,
@@ -762,7 +756,6 @@
 			baseConfigurationReference = 9389295E2442AB3F4B378755 /* Pods-Chatlover.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Chatlover/Chatlover.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 33PBA72JFF;
@@ -781,7 +774,6 @@
 			baseConfigurationReference = D843F4DCE75A0F6D086758D6 /* Pods-Chatlover.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Chatlover/Chatlover.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 33PBA72JFF;
